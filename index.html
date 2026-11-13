@@ -72,6 +72,9 @@ button:focus-visible, textarea:focus-visible{outline:2px solid var(--blue); outl
 .bubble .quote{display:block; margin-top:10px; padding:10px 14px; background:var(--sub); border-radius:14px; font-size:13.5px; color:var(--ink-2); white-space:normal}
 .bubble .quote small{display:block; font-size:12.5px; color:var(--ink-3)}
 .bubble .acts{display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; white-space:normal}
+.bubble.report{display:flex; flex-direction:column; gap:6px}
+.rep-tag{display:inline-flex; align-items:center; gap:6px; font-size:12px; font-weight:600; color:var(--teal)}
+.rep-tag svg{width:14px; height:14px}
 .brief-link{align-self:flex-start; display:inline-flex; align-items:center; gap:10px; background:var(--bubble); border-radius:14px; padding:7px 12px 7px 9px; font-size:13.5px; box-shadow:0 1px 1px rgba(30,40,60,0.03)}
 .brief-link .ic{width:26px; height:26px; border-radius:8px; display:grid; place-items:center; background:var(--teal-soft); color:var(--teal)}
 .brief-link .ic svg{width:15px; height:15px}
@@ -380,6 +383,41 @@ button:focus-visible, textarea:focus-visible{outline:2px solid var(--blue); outl
 .steps li.now .sn::after{content:""; position:absolute; inset:0; border-radius:50%; border:2px solid transparent; border-top-color:var(--blue); border-right-color:var(--blue); animation:spin 1s linear infinite}
 .steps li.now .sh .badge::before{content:""; display:inline-block; width:6px; height:6px; border-radius:50%; background:currentColor; margin-right:6px; vertical-align:1px; animation:blink 1.2s ease-in-out infinite}
 .segs i.now{background:linear-gradient(90deg, var(--blue) 0%, #9fd2f7 50%, var(--blue) 100%); background-size:200% 100%; animation:flow 1.4s linear infinite}
+/* merged decisions */
+.decs{gap:0}
+.decs > .eyebrow{margin-bottom:12px}
+.dec{display:flex; flex-direction:column; gap:10px; padding:16px 0; border-top:1px solid var(--card-line)}
+.decs > .eyebrow + .dec{border-top:none; padding-top:0}
+.dec:last-child{padding-bottom:2px}
+.dec-k{font-size:12px; font-weight:600; color:var(--ink-3); letter-spacing:0.04em}
+.dec h2{font-size:16px}
+/* weekly report (任务 tab) */
+.weeks{display:flex; flex-direction:column; gap:10px}
+.week{padding:0; gap:0}
+.week > summary{list-style:none; cursor:pointer; display:grid; grid-template-columns:minmax(0,1fr) auto; gap:4px 12px; align-items:center; padding:14px 20px}
+.week > summary::-webkit-details-marker{display:none}
+.week > summary .eyebrow{grid-column:1 / 2}
+.week > summary .wk-sum{grid-column:1 / 2; margin:0; font-size:15.5px; line-height:1.45; font-weight:650; letter-spacing:-0.01em; text-wrap:balance}
+.week > summary .wk-side{grid-column:2; grid-row:1 / 3; display:flex; align-items:center; gap:10px}
+.week > summary .chev{width:18px; height:18px; color:var(--ink-3); transition:transform .2s cubic-bezier(0.25,1,0.5,1)}
+.week[open] > summary .chev{transform:rotate(180deg)}
+.week:not([open]) > summary .wk-sum{font-size:14.5px; font-weight:550; color:var(--ink-2)}
+.wk-body{display:flex; flex-direction:column; gap:8px; padding:0 20px 16px}
+.wk-kpis{display:flex; flex-direction:column; gap:6px}
+.wk-kpi{display:grid; grid-template-columns:minmax(0,1fr) auto auto; gap:12px; align-items:baseline; background:var(--sub); border-radius:12px; padding:8px 14px; font-size:13.5px; color:var(--ink-2)}
+.wk-kpi b{font-size:16px; font-weight:650; color:var(--ink); font-variant-numeric:tabular-nums; margin-right:2px}
+.wk-kpi em{font-style:normal; color:var(--ink-3); font-variant-numeric:tabular-nums; white-space:nowrap}
+.wk-kpi .badge{margin-left:0}
+.wk-line{margin:2px 0 0; font-size:13.5px; color:var(--ink); line-height:1.6}
+.wk-line span{font-size:12px; font-weight:600; letter-spacing:0.06em; color:var(--ink-3); margin-right:10px}
+.wk-decs{display:flex; flex-wrap:wrap; gap:6px; margin-top:2px}
+.wk-dec{display:inline-flex; align-items:center; gap:8px; font:inherit; font-size:13px; color:var(--ink); background:var(--amber-soft); border-radius:999px; padding:5px 12px}
+.wk-dec:hover{filter:brightness(0.97)}
+.wk-dec .st{font-size:12px; color:var(--amber); white-space:nowrap}
+.wk-dec.done{background:var(--sub); color:var(--ink-2); cursor:default; filter:none}
+.wk-dec.done .st{color:var(--teal)}
+[data-decision].flash{animation:rowflash 1.6s ease-out}
+@media (prefers-reduced-motion: reduce){ .week > summary .chev{transition:none} [data-decision].flash{animation:none} }
 /* tools per plan step */
 .steps .tools{display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin-top:8px}
 .steps .tools .tl{font-size:12px; color:var(--ink-3); margin-right:2px}
@@ -751,19 +789,17 @@ button.tool.off:hover{background:color-mix(in srgb, var(--amber) 14%, #fff)}
 
     <div class="log" id="log" aria-live="polite">
       <div class="when">昨天 21:40</div>
-      <div class="bubble">晚间汇报到了。第一期「辞职创业还是继续上班」的模拟跑完了第一版：换了 3 组假设，有 2 条结论都没变，创业成功率那条一换假设就变，不进视频。</div>
-      <button class="brief-link" type="button" data-goto="progress"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></span>晚间汇报 · 11 月 10 日<span class="chev">›</span></button>
+      <div class="bubble report"><span class="rep-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>晚间汇报 · 11 月 10 日</span>第一期的模拟跑完了第一版：换了 3 组假设，有 2 条结论都没变，失业概率那条一换假设就变，不进视频。</div>
 
       <div class="when">今天 8:30</div>
-      <div class="bubble">早上好。今天有 2 件事要你定。先定第 1 步留下的：发出去以后看什么算验证了。不先定，发完就只能看着结果挑标准。</div>
-      <button class="brief-link" type="button" data-goto="progress"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></span>晨间汇报 · 11 月 11 日<span class="chev">›</span></button>
+      <div class="bubble report"><span class="rep-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>晨间汇报 · 11 月 11 日</span>早上好。今天有 2 件事要你定。先定第 1 步留下的：发出去以后看什么算验证了。不先定，发完就只能看着结果挑标准。</div>
 
-      <div class="bubble" data-decision="signal">第一期要验证的是「模拟自身决策」。我建议两个都看，以等候名单为主：<span class="quote"><small>回复「我也想跑一遍我的」的人数</small>最直接，但只回复不花成本，偏乐观。</span><span class="quote"><small>点进等候名单的人数</small>要多点一步、留联系方式，更接近愿不愿意付费。</span><span class="acts" data-slot><button class="btn primary" data-act="ok">两个都看，等候名单为主</button><button class="btn" data-act="a">只看回复</button><button class="btn" data-act="b">只看等候名单</button></span></div>
+      <div class="bubble" data-decision="signal">第一期要验证的是「模拟自身决策」。我建议两个都看，以等候名单为主：<span class="quote"><small>回复「我也想跑一遍我的」的人数</small>最直接，但只回复不花成本，偏乐观。</span><span class="quote"><small>点进等候名单的人数</small>要多点一步、留联系方式，更接近愿不愿意付费。</span><span class="acts" data-slot><button class="btn primary" data-act="ok">两者都看，以等候名单为主</button><button class="btn" data-act="a">只看回复</button><button class="btn" data-act="b">只看等候名单</button></span></div>
     </div>
 
     <div class="suggest">
-      <button type="button" data-say="这几个参数都是从哪来的？">参数从哪来？</button>
-      <button type="button" data-say="为什么选辞职创业做第一期？">为什么先做这期？</button>
+      <button type="button" data-goto="tasks">本周周报</button><button type="button" data-say="这几个参数都是从哪来的？">参数从哪来？</button>
+      <button type="button" data-say="第一期为什么选这个题？">为什么先做这期？</button>
       <button type="button" data-say="第二期打算讲什么？">第二期讲什么？</button>
       <button type="button" data-say="我想调整一下工作流程">调整流程</button>
     </div>
@@ -793,91 +829,86 @@ button.tool.off:hover{background:color-mix(in srgb, var(--amber) 14%, #fff)}
           <section class="gsec">
             <div class="glabel">目标</div>
             <h2>用第一期验证付费点「模拟自身决策」</h2>
-            <p class="lede">看有没有人想把自己的决定也模拟一遍。看什么算验证了还没定，在下面等你定。</p>
+            <p class="lede">衡量是否有人愿意模拟自己的决策；验证信号待定。</p>
           </section>
           <section class="gsec">
             <div class="ghead"><div class="glabel">计划</div><button class="flow-edit" type="button" data-flow-edit><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>调整流程</button></div>
             <ol class="steps" data-flow="ellie">
-              <li data-tools="" class="wait" data-who="2" data-step-of="signal"><span class="sn">1</span><div class="sb"><div class="sh"><strong>定要验证的付费点和信号</strong><span class="wlab me">你自己做</span><span class="badge amber" data-sbadge>信号待定</span></div><div class="where">付费点定了：模拟自身决策。看回复人数还是等候名单人数，等你定</div></div></li>
-              <li data-tools="X|YouTube" class="ok" data-who="0"><span class="sn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span><div class="sb"><div class="sh"><strong>看什么话题有流量</strong><span class="wlab">分身做</span><span class="badge " data-sbadge>已完成</span></div><div class="where">参考「100 万次人生模拟」，定了三条选题标准：人人都会遇到的人生大问题、结论反直觉、观众能代入自己</div></div></li>
-              <li data-tools="X|YouTube" class="ok" data-who="1"><span class="sn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span><div class="sb"><div class="sh"><strong>定讲什么</strong><span class="wlab">分身做，你确认</span><span class="badge " data-sbadge>已完成</span></div><div class="where">话题和付费点交叉排出选题清单；形式定为「模拟结果」，系列叫「同一个人，重来一万次」</div></div></li>
-              <li data-tools="模拟引擎|论文库" class="wait" data-who="1" data-step-of="claims"><span class="sn">4</span><div class="sb"><div class="sh"><strong>做出真结果</strong><span class="wlab">分身做，你确认</span><span class="badge amber" data-sbadge>结论待你看</span></div><div class="where">参数都有出处，假设写明；只讲换了假设也不变的结论</div></div></li>
-              <li data-tools="剪映|X" class="todo" data-who="1"><span class="sn">5</span><div class="sb"><div class="sh"><strong>制作并按平台适配</strong><span class="wlab">分身做，你确认</span></div><div class="where">X 用横版加配音字幕，竖版留给短视频平台；配一条帖子，首条回复放假设和来源</div></div></li>
-              <li data-tools="X|邮箱" class="todo" data-who="0"><span class="sn">6</span><div class="sb"><div class="sh"><strong>发布后复盘</strong><span class="wlab">分身做</span></div><div class="where">对照第 1 步定的信号看结果，决定继续做、换话题，还是换付费点；有效的形式沉淀成系列</div></div></li>
+              <li data-tools="" class="wait" data-who="2" data-step-of="signal"><span class="sn">1</span><div class="sb"><div class="sh"><strong>定要验证的付费点和信号</strong><span class="wlab me">本人负责</span><span class="badge amber" data-sbadge>待决策</span></div><div class="where">付费点已定；信号在回复数与等候名单人数之间待定</div></div></li>
+              <li data-tools="X|YouTube" class="ok" data-who="0"><span class="sn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span><div class="sb"><div class="sh"><strong>看什么话题有流量</strong><span class="wlab">分身执行</span><span class="badge " data-sbadge>已完成</span></div><div class="where">参考「100 万次人生模拟」；选题标准：普遍问题、结论反直觉、观众可代入</div></div></li>
+              <li data-tools="X|YouTube" class="ok" data-who="1"><span class="sn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span><div class="sb"><div class="sh"><strong>定讲什么</strong><span class="wlab">分身执行，需确认</span><span class="badge " data-sbadge>已完成</span></div><div class="where">形式为模拟结果；系列「同一个人，重来一万次」</div></div></li>
+              <li data-tools="模拟引擎|论文库" class="wait" data-who="1" data-step-of="claims"><span class="sn">4</span><div class="sb"><div class="sh"><strong>做出真结果</strong><span class="wlab">分身执行，需确认</span><span class="badge amber" data-sbadge>待决策</span></div><div class="where">参数注明出处、假设写明；只保留换假设后不变的结论</div></div></li>
+              <li data-tools="剪映|X" class="todo" data-who="1"><span class="sn">5</span><div class="sb"><div class="sh"><strong>制作并按平台适配</strong><span class="wlab">分身执行，需确认</span></div><div class="where">X 横版配音字幕，竖版投短视频平台；首条回复附假设与来源</div></div></li>
+              <li data-tools="X|邮箱" class="todo" data-who="0"><span class="sn">6</span><div class="sb"><div class="sh"><strong>发布后复盘</strong><span class="wlab">分身执行</span></div><div class="where">按第 1 步信号评估，决定继续、换题或换付费点</div></div></li>
             </ol>
           </section>
           <section class="gsec">
             <div class="glabel">进展</div>
-            <p class="pnum">模拟跑完第一版：换了 3 组假设，有 2 条结论不变</p>
+            <p class="pnum">第一版模拟完成：3 组假设下 2 条结论稳定</p>
             <div class="subs">
-              <div class="sub"><div class="sub-head"><span class="d"></span><strong>失败后多久回到原收入，比成没成更关键</strong><span class="badge">3 组都成立</span></div></div>
-              <div class="sub"><div class="sub-head"><span class="d"></span><strong>存款撑不过一年的，坏结局最多</strong><span class="badge">3 组都成立</span></div></div>
-              <div class="sub"><div class="sub-head"><span class="d" style="background:var(--coral)"></span><strong>创业成功率</strong><span class="badge coral">换了假设就变 · 不讲</span></div></div>
+              <div class="sub"><div class="sub-head"><span class="d"></span><strong>收入恢复时长比是否失业更关键</strong><span class="badge">3 组一致</span></div></div>
+              <div class="sub"><div class="sub-head"><span class="d"></span><strong>存款不足一年者坏结局最多</strong><span class="badge">3 组一致</span></div></div>
+              <div class="sub"><div class="sub-head"><span class="d" style="background:var(--coral)"></span><strong>下行期失业概率</strong><span class="badge coral">不稳定 · 不采用</span></div></div>
             </div>
-            <div class="tags"><span class="tag">标 Simulation</span><span class="tag">不给建议</span><span class="tag">不用真人名</span><span class="tag">不说「预测」</span></div>
-            <p class="foot">两件事等你定：看什么算验证了，这两条结论能不能进视频。结论内容是示例。</p>
           </section>
-          <div class="acts"><button class="btn primary" type="button" data-say="这几个参数都是从哪来的？">看参数出处</button><button class="btn" type="button" data-say="这期还有什么风险？">问分身</button></div>
         </article>
 
-        <article class="card" data-decision="signal">
-          <div class="eyebrow amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>等待决策 · 运营 · 第 1 步</div>
-          <h2>第一期发出去以后，看什么算验证了？</h2>
-          <p class="lede">要验证的付费点是「模拟自身决策」。信号要在发布前定，发完再定就成了看结果挑标准。</p>
-          <div class="subs">
-            <div class="sub"><div class="sub-head"><span class="d"></span><strong>看回复「我也想跑一遍我的」的人数</strong></div><div class="where">最直接，看得出有没有人想用在自己身上；但只回复不花成本，偏乐观</div></div>
-            <div class="sub"><div class="sub-head"><span class="d"></span><strong>看点进等候名单的人数</strong><span class="badge">分身建议为主</span></div><div class="where">要多点一步、留联系方式，更接近愿不愿意付费；人数会少</div></div>
-          </div>
-          <div class="acts" data-slot><button class="btn primary" data-act="ok">两个都看，等候名单为主</button><button class="btn" data-act="a">只看回复</button><button class="btn" data-act="b">只看等候名单</button></div>
+        <article class="card decs">
+          <div class="eyebrow amber">待决策</div>
+          <section class="dec" data-decision="signal">
+            <div class="dec-k">第 1 步 · 验证信号</div>
+            <h2>第一期以什么作为验证信号？</h2>
+            <p class="lede">信号须在发布前确定，避免事后挑标准。</p>
+            <div class="subs">
+              <div class="sub"><div class="sub-head"><span class="d"></span><strong>回复「我也想跑一遍」的人数</strong></div><div class="where">反应直接，但无成本，偏乐观</div></div>
+              <div class="sub"><div class="sub-head"><span class="d"></span><strong>加入等候名单的人数</strong><span class="badge">建议为主</span></div><div class="where">门槛更高，更接近付费意愿；人数较少</div></div>
+            </div>
+            <div class="acts" data-slot><button class="btn primary" data-act="ok">两者都看，以等候名单为主</button><button class="btn" data-act="a">只看回复</button><button class="btn" data-act="b">只看等候名单</button></div>
+          </section>
+          <section class="dec" data-decision="claims">
+            <div class="dec-k">第 4 步 · 结论审核</div>
+            <h2>第一期拟采用以下两条结论</h2>
+            <div class="quote"><small>3 组假设下均成立（示例）</small>1. 结局好坏主要取决于失业后收入恢复所需时间，而非是否失业。<br>2. 存款不足一年的样本中，坏结局占比最高。</div>
+            <div class="quote"><small>不稳定，不采用</small>下行期失业概率：随参数在 1 成到 3 成间波动。</div>
+            <p class="foot">只陈述模拟结果，不给建议；参数出处放首条回复。</p>
+            <div class="acts" data-slot><button class="btn primary" data-act="ok">采用这两条</button><button class="btn" data-act="edit">修改</button><button class="btn" data-act="skip">加跑一组假设</button></div>
+          </section>
         </article>
-
-        <article class="card" data-decision="claims">
-          <div class="eyebrow amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>等待决策 · 运营 · 第 4 步</div>
-          <h2>第一期准备讲这两条结论，要你看一下</h2>
-          <div class="quote"><small>换了 3 组假设都不变（示例）</small>1. 决定结局好坏的，主要不是创业成没成，而是失败以后多久能回到原来的收入。<br>2. 存款撑不过一年的那些人生里，三组假设下坏结局都最多。</div>
-          <div class="quote"><small>换了假设就变，不讲</small>创业成功率。参数一换，结果从 1 成多到 3 成都有，没法当结论。</div>
-          <p class="foot">两条都只讲模拟里出现了什么，不说“你该怎么做”。参数出处和三组假设放在帖子的首条回复里。</p>
-          <div class="acts" data-slot><button class="btn primary" data-act="ok">就讲这两条</button><button class="btn" data-act="edit">我改一下</button><button class="btn" data-act="skip">再跑一组假设</button></div>
-        </article>
-
-        <div class="divider">昨天<b>晚间汇报</b></div>
       </div>
 
       <!-- 任务 -->
       <div class="view" id="v-tasks" role="tabpanel" aria-labelledby="tab-tasks" hidden>
+        <div class="mem-title">周报<span>每周五 18:00 生成</span></div>
+        <div class="weeks" data-week="ellie"></div>
+        <div class="mem-title">任务</div>
         <article class="card">
-          <div class="eyebrow">运营 · 进行中</div>
-          <h2>第一期：辞职创业还是继续上班</h2>
-          <div class="subs"><div class="sub"><div class="sub-head"><span class="d"></span><strong>第 4 步 · 做出真结果</strong><span class="badge amber">2 件等你定</span></div><div class="where">验证付费点「模拟自身决策」</div></div></div>
-        </article>
-        <article class="card">
-          <div class="eyebrow">运营 · 排着</div>
           <div class="subs">
-            <div class="sub"><div class="sub-head"><span class="d light"></span><strong>第二期 · 选题还没定</strong><span class="badge grey">等第一期复盘</span></div><div class="where">第一期信号好，就接着验证同一个付费点；不好，就换付费点</div></div>
+            <div class="sub"><div class="sub-head"><span class="d"></span><strong>第一期视频</strong><span class="badge">进行中</span></div><div class="where">第 4 步 · 做出真结果 · 待决策 2</div></div>
+            <div class="sub"><div class="sub-head"><span class="d light"></span><strong>第二期</strong><span class="badge grey">排队</span></div><div class="where">待第一期复盘后定题</div></div>
           </div>
-          <p class="foot">新任务直接在左边跟分身说，它会先给你计划和预测，你确认了才动手。</p>
+          <p class="foot">新任务在左侧对话中发起；分身先给出计划与预期，确认后执行。</p>
         </article>
       </div>
 
       <!-- 分身：记忆 -->
       <div class="view" id="v-twin" role="tabpanel" aria-labelledby="tab-twin" hidden>
         <div class="mem" data-mem="ellie"></div>
-        <div class="mem-title">授权平台<span>运营要用到的平台；授权和撤销都在这里</span></div>
+        <div class="mem-title">授权平台<span>按需授权，可随时撤销</span></div>
         <article class="card">
           <div class="subs">
-            <div class="sub" data-conn-row="e_x"><div class="sub-head"><span class="d"></span><strong>X</strong><span class="badge" data-badge>已连接</span><button class="link-btn" type="button" data-conn="e_x">管理</button></div><div class="where">读帖子下的回复和私信，数有多少人说想跑一遍自己的；发帖要你确认。X 的接口按用量收费</div></div>
-            <div class="sub" data-conn-row="e_wx"><div class="sub-head"><span class="d light"></span><strong>微信公众号</strong><span class="badge amber" data-badge>只读</span><button class="link-btn" type="button" data-conn="e_wx">管理</button></div><div class="where">读阅读数和留言；发文由你在后台点发布</div></div>
-            <div class="sub" data-conn-row="e_mail"><div class="sub-head"><span class="d"></span><strong>邮箱</strong><span class="badge" data-badge>已连接</span><button class="link-btn" type="button" data-conn="e_mail">管理</button></div><div class="where">读等候名单的报名通知，算人数</div></div>
-            <div class="sub" data-conn-row="e_jy"><div class="sub-head"><span class="d light"></span><strong>剪映</strong><span class="badge grey" data-badge>未连接</span><button class="link-btn" type="button" data-conn="e_jy">授权</button></div><div class="where">连上后分身能把横版、竖版的草稿直接放进你的剪映草稿箱</div></div>
+            <div class="sub" data-conn-row="e_x"><div class="sub-head"><span class="d"></span><strong>X</strong><span class="badge" data-badge>已连接</span><button class="link-btn" type="button" data-conn="e_x">管理</button></div><div class="where">读取回复与私信并统计意向；发帖需确认。接口按量计费</div></div>
+            <div class="sub" data-conn-row="e_wx"><div class="sub-head"><span class="d light"></span><strong>微信公众号</strong><span class="badge amber" data-badge>只读</span><button class="link-btn" type="button" data-conn="e_wx">管理</button></div><div class="where">读取阅读数与留言；发布由本人操作</div></div>
+            <div class="sub" data-conn-row="e_mail"><div class="sub-head"><span class="d"></span><strong>邮箱</strong><span class="badge" data-badge>已连接</span><button class="link-btn" type="button" data-conn="e_mail">管理</button></div><div class="where">读取等候名单通知并计数</div></div>
+            <div class="sub" data-conn-row="e_jy"><div class="sub-head"><span class="d light"></span><strong>剪映</strong><span class="badge grey" data-badge>未连接</span><button class="link-btn" type="button" data-conn="e_jy">授权</button></div><div class="where">授权后可将横竖版草稿存入草稿箱</div></div>
           </div>
         </article>
-        <div class="mem-title">规则<span>每一步能自己做多少主，按最近的命中率自动放手或收回</span></div>
+        <div class="mem-title">规则<span>按近期命中率调整自主权限</span></div>
         <article class="card">
-          <p class="lede">最近 10 次里中 8 次，这一步就改成“自己做，事后告诉你”；最近 5 次里中不到 3 次，就降回“要你确认”。（示例规则）</p>
+          <p class="lede">近 10 次命中 8 次及以上：改为自主执行、事后告知；近 5 次命中不足 3 次：恢复为需确认。（示例）</p>
           <div class="subs">
-            <div class="sub level"><div class="n"><strong>回复评论</strong><span>普通网友、同行</span></div><div class="hits"><i class="h"></i><i class="h"></i><i class="h"></i><i class="m"></i><i class="h"></i><i class="h"></i><i class="h"></i><i class="h"></i><i class="h"></i><i class="h"></i></div><span class="badge">自己做</span></div>
-            <div class="sub level"><div class="n"><strong>写视频脚本</strong><span>文案、字幕、配音稿</span></div><div class="hits"><i class="h"></i><i class="h"></i><i class="m"></i><i class="h"></i><i class="h"></i><i class="m"></i><i class="h"></i><i class="h"></i><i></i><i></i></div><span class="badge amber">要你确认 · 差 2 次</span></div>
-            <div class="sub level"><div class="n"><strong>发视频和帖子</strong><span>X、公众号</span></div><div class="hits"><i class="h"></i><i class="m"></i><i class="h"></i><i class="h"></i><i class="m"></i><i class="h"></i><i></i><i></i><i></i><i></i></div><span class="badge amber">要你确认</span></div>
+            <div class="sub level"><div class="n"><strong>回复评论</strong><span>普通网友、同行</span></div><div class="hits"><i class="h"></i><i class="h"></i><i class="h"></i><i class="m"></i><i class="h"></i><i class="h"></i><i class="h"></i><i class="h"></i><i class="h"></i><i class="h"></i></div><span class="badge">自主执行</span></div>
+            <div class="sub level"><div class="n"><strong>写视频脚本</strong><span>文案、字幕、配音稿</span></div><div class="hits"><i class="h"></i><i class="h"></i><i class="m"></i><i class="h"></i><i class="h"></i><i class="m"></i><i class="h"></i><i class="h"></i><i></i><i></i></div><span class="badge amber">需确认 · 差 2 次</span></div>
+            <div class="sub level"><div class="n"><strong>发视频和帖子</strong><span>X、公众号</span></div><div class="hits"><i class="h"></i><i class="m"></i><i class="h"></i><i class="h"></i><i class="m"></i><i class="h"></i><i></i><i></i><i></i><i></i></div><span class="badge amber">需确认</span></div>
           </div>
         </article>
       </div>
@@ -898,14 +929,13 @@ button.tool.off:hover{background:color-mix(in srgb, var(--amber) 14%, #fff)}
     </div>
     <div class="log" aria-live="polite">
       <div class="when">昨天 19:10</div>
-      <div class="bubble">晚间汇报：今天又有 2 位候选人回复。研究员这个岗位目前触达 25 人、回复 7 人，预测是 8 人，周五出结果。</div>
+      <div class="bubble report"><span class="rep-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>晚间汇报 · 11 月 10 日</span>今天又有 2 位候选人回复。研究员这个岗位目前触达 25 人、回复 7 人，预测是 8 人，周五出结果。</div>
       <div class="when">今天 8:30</div>
-      <div class="bubble">早上好，Lance。上周写信的 6 位导师回了 4 位，推荐了 5 个学生，比预测好。开源工具作者那群回得少，只有 12%。下一批名单我建议往实验室那边多放，需要你定一下。</div>
-      <button class="brief-link" type="button" data-goto="progress"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></span>晨间汇报 · 11 月 11 日<span class="chev">›</span></button>
-      <div class="bubble" data-decision="weiss">另外，写给 Weiss 教授的信写好了。写给导师的信一直要你过目：<span class="quote"><small>写给 Prof. Hannah Weiss（示例）</small>We're building protein-design models at an AI-for-science lab and are looking for one researcher who has shipped structure-prediction work end to end. If anyone in your group is finishing up and might be interested, I'd be grateful for an introduction. I'm Lance's AI assistant; Lance will follow up personally.</span><span class="acts" data-slot><button class="btn primary" data-act="ok">就这么发</button><button class="btn" data-act="edit">我改一下</button><button class="btn" data-act="skip">先不发</button></span></div>
+      <div class="bubble report"><span class="rep-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>晨间汇报 · 11 月 11 日</span>早上好，Lance。上周写信的 6 位导师回了 4 位，推荐了 5 个学生，比预测好。开源工具作者那群回得少，只有 12%。下一批名单我建议往实验室那边多放，需要你定一下。</div>
+      <div class="bubble" data-decision="weiss">另外，写给 Weiss 教授的信写好了。写给导师的信一直要你过目：<span class="quote"><small>写给 Prof. Hannah Weiss（示例）</small>We're building protein-design models at an AI-for-science lab and are looking for one researcher who has shipped structure-prediction work end to end. If anyone in your group is finishing up and might be interested, I'd be grateful for an introduction. I'm Lance's AI assistant; Lance will follow up personally.</span><span class="acts" data-slot><button class="btn primary" data-act="ok">发送</button><button class="btn" data-act="edit">修改</button><button class="btn" data-act="skip">暂不发送</button></span></div>
     </div>
     <div class="suggest">
-      <button type="button" data-say="这个岗位要的人画像再给我看一下">岗位画像</button>
+      <button type="button" data-goto="tasks">本周周报</button><button type="button" data-say="这个岗位要的人画像再给我看一下">岗位画像</button>
       <button type="button" data-say="约了聊的 3 个人是谁？">约聊的 3 个人</button>
       <button type="button" data-say="开源作者那群为什么回得少？">开源作者为什么回得少？</button>
       <button type="button" data-say="我想调整一下工作流程">调整流程</button>
@@ -933,28 +963,28 @@ button.tool.off:hover{background:color-mix(in srgb, var(--amber) 14%, #fff)}
           <section class="gsec">
             <div class="glabel">目标</div>
             <h2>招 1 位计算生物研究员（蛋白质设计），11 月底前约到 2 人面试</h2>
-            <p class="lede">11-30 复盘：看约聊、面试的人数和预测差多少，来面试的人是不是符合画像。</p>
-            <details class="more"><summary>要什么样的人</summary>
+            <p class="lede">11-30 复盘：对照约聊、面试人数与预测，并核对人选是否符合画像。</p>
+            <details class="more"><summary>人选画像</summary>
               <dl class="spec">
-                <dt>做过什么</dt><dd>亲手做过蛋白质结构预测或设计，从数据到模型到实验验证走完过一遍</dd>
-                <dt>怎么算顶尖</dt><dd>近 3 年这个方向有一作论文；或出自这个方向前 15 的实验室；或是同行在用的开源工具的核心作者</dd>
-                <dt>不要</dt><dd>只调用现成工具、没碰过实验数据的</dd>
+                <dt>经验</dt><dd>独立完成过蛋白质结构预测或设计，覆盖数据、模型到实验验证</dd>
+                <dt>顶尖标准</dt><dd>近 3 年该方向一作论文；或出自前 15 实验室；或主流开源工具核心作者</dd>
+                <dt>排除</dt><dd>仅调用现成工具、无实验数据经验</dd>
               </dl>
             </details>
           </section>
           <section class="gsec">
             <div class="ghead"><div class="glabel">计划</div><button class="flow-edit" type="button" data-flow-edit><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>调整流程</button></div>
             <ol class="steps" data-flow="lance">
-              <li data-tools="" class="ok" data-who="2"><span class="sn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span><div class="sb"><div class="sh"><strong>定画像</strong><span class="wlab me">你自己做</span><span class="badge ">已确认</span></div><div class="where">Lance 定的。找谁、算不算命中，都按画像判断</div></div></li>
-              <li data-tools="论文库|GitHub|实验室主页" class="wait" data-who="1"><span class="sn">2</span><div class="sb"><div class="sh"><strong>找最顶尖的那群人</strong><span class="wlab">分身做，你确认</span><span class="badge amber">等你定</span></div><div class="where">分身找到三群，下一批先找哪群要你定</div></div></li>
-              <li data-tools="邮箱|LinkedIn" class="now" data-who="1"><span class="sn">3</span><div class="sb"><div class="sh"><strong>触达</strong><span class="wlab">分身做，你确认</span><span class="badge ">25 / 40</span></div><div class="where">先写信请导师推荐，直接写信为辅</div></div></li>
-              <li data-tools="日历" class="todo" data-who="2"><span class="sn">4</span><div class="sb"><div class="sh"><strong>约聊、面试</strong><span class="wlab me">你自己做</span></div><div class="where">约聊由 Lance 亲自来，分身只排时间、准备材料</div></div></li>
-              <li data-tools="招聘系统" class="todo" data-who="0"><span class="sn">5</span><div class="sb"><div class="sh"><strong>11-30 · 复盘</strong><span class="wlab">分身做</span></div><div class="where">和预测比，写复盘，调下一批的人群和写法</div></div></li>
+              <li data-tools="" class="ok" data-who="2"><span class="sn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span><div class="sb"><div class="sh"><strong>定画像</strong><span class="wlab me">本人负责</span><span class="badge ">已确认</span></div><div class="where">寻人与命中判断均以画像为准</div></div></li>
+              <li data-tools="论文库|GitHub|实验室主页" class="wait" data-who="1"><span class="sn">2</span><div class="sb"><div class="sh"><strong>找最顶尖的那群人</strong><span class="wlab">分身执行，需确认</span><span class="badge amber">待决策</span></div><div class="where">已识别三类人群，下一批优先级待定</div></div></li>
+              <li data-tools="邮箱|LinkedIn" class="now" data-who="1"><span class="sn">3</span><div class="sb"><div class="sh"><strong>触达</strong><span class="wlab">分身执行，需确认</span><span class="badge ">25 / 40</span></div><div class="where">以导师推荐为主，直接联系为辅</div></div></li>
+              <li data-tools="日历" class="todo" data-who="2"><span class="sn">4</span><div class="sb"><div class="sh"><strong>约聊、面试</strong><span class="wlab me">本人负责</span></div><div class="where">由 Lance 本人面谈；分身负责排期与材料</div></div></li>
+              <li data-tools="招聘系统" class="todo" data-who="0"><span class="sn">5</span><div class="sb"><div class="sh"><strong>11-30 · 复盘</strong><span class="wlab">分身执行</span></div><div class="where">对照预测复盘，调整下一批人群与话术</div></div></li>
             </ol>
           </section>
           <section class="gsec">
             <div class="glabel">进展</div>
-            <p class="pnum">已触达 25 人，7 人回复（预测 8 人），3 人约了聊，1 人面试</p>
+            <p class="pnum">触达 25 · 回复 7（预测 8）· 约聊 3 · 面试 1</p>
             <div class="funnel num">
               <div class="frow"><span class="fl">名单</span><div class="fbar"><i style="width:100%"></i></div><span class="fv"><strong>40</strong></span></div>
               <div class="frow"><span class="fl">已触达</span><div class="fbar"><i style="width:62.5%"></i></div><span class="fv"><strong>25</strong></span></div>
@@ -964,73 +994,69 @@ button.tool.off:hover{background:color-mix(in srgb, var(--amber) 14%, #fff)}
             </div>
             <div class="legend"><span><i style="background:var(--teal)"></i>实际</span><span><i style="background:var(--blue); border-radius:1px; width:3px"></i>预测</span></div>
             <div class="subs">
-              <div class="sub"><div class="sub-head"><span class="d"></span><strong>实验室学生（导师推荐）</strong><span class="badge">回复 4 / 10</span></div><div class="where">预测 3 人，多了 1 个。导师推荐来的人回得快</div></div>
-              <div class="sub"><div class="sub-head"><span class="d" style="background:var(--coral)"></span><strong>开源工具作者（直接写信）</strong><span class="badge coral">回复 2 / 15</span></div><div class="where">预测 3 人，少了 1 个。直接写信像推销，打开率低</div></div>
+              <div class="sub"><div class="sub-head"><span class="d"></span><strong>实验室学生（导师推荐）</strong><span class="badge">回复 4 / 10</span></div><div class="where">高于预测 1 人；推荐渠道响应快</div></div>
+              <div class="sub"><div class="sub-head"><span class="d" style="background:var(--coral)"></span><strong>开源工具作者（直接写信）</strong><span class="badge coral">回复 2 / 15</span></div><div class="where">低于预测 1 人；直接联系打开率低</div></div>
             </div>
           </section>
-          <div class="acts"><button class="btn primary" type="button" data-say="约了聊的 3 个人是谁？">看约聊的 3 个人</button><button class="btn" type="button" data-say="开源作者那群为什么回得少？">问分身</button></div>
         </article>
 
-        <article class="card" data-decision="pools">
-          <div class="eyebrow amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>等待决策 · 招聘 · 第二步：找最顶尖的那群人</div>
-          <h2>下一批名单先找哪群人？</h2>
-          <p class="lede">符合画像的顶尖人群，分身找到了三群，每群都先写了预测。</p>
-          <div class="subs">
-            <div class="sub"><div class="sub-head"><span class="d"></span><strong>顶尖实验室的学生和博士后</strong><span class="badge">分身建议先找</span></div><div class="where">15 个实验室 · 约 60 人 · 先写信给导师，请导师推荐</div><div class="tags"><span class="tag">预测 60 人里 12 人回复</span><span class="tag">上一批实际回复率 40%</span></div></div>
-            <div class="sub"><div class="sub-head"><span class="d light"></span><strong>头部 AI 制药团队的前员工</strong><span class="badge grey">新的一群</span></div><div class="where">约 25 人 · 最近半年离职 · 通过前同事引荐</div><div class="tags"><span class="tag">预测 25 人里 5 人回复</span><span class="tag">还没出过结果</span></div></div>
-            <div class="sub"><div class="sub-head"><span class="d light" style="background:var(--coral)"></span><strong>开源工具的核心作者</strong><span class="badge coral">回得少</span></div><div class="where">18 人 · 直接写邮件</div><div class="tags"><span class="tag">原预测回复率 20%</span><span class="tag">实际 12%</span></div></div>
-          </div>
-          <div class="acts" data-slot><button class="btn primary" data-act="ok">按建议，先找实验室</button><button class="btn" data-act="both">实验室和前员工一起</button><button class="btn" data-act="skip">我再想想</button></div>
+        <article class="card decs">
+          <div class="eyebrow amber">待决策</div>
+          <section class="dec" data-decision="pools">
+            <div class="dec-k">第 2 步 · 人群优先级</div>
+            <h2>下一批优先联系哪类人群？</h2>
+            <div class="subs">
+              <div class="sub"><div class="sub-head"><span class="d"></span><strong>顶尖实验室的学生和博士后</strong><span class="badge">建议优先</span></div><div class="where">15 个实验室 · 约 60 人 · 经导师推荐</div><div class="tags"><span class="tag">预测回复 12 / 60</span><span class="tag">上批回复率 40%</span></div></div>
+              <div class="sub"><div class="sub-head"><span class="d light"></span><strong>头部 AI 制药团队的前员工</strong><span class="badge grey">新人群</span></div><div class="where">约 25 人 · 近半年离职 · 前同事引荐</div><div class="tags"><span class="tag">预测回复 5 / 25</span><span class="tag">暂无数据</span></div></div>
+              <div class="sub"><div class="sub-head"><span class="d light" style="background:var(--coral)"></span><strong>开源工具的核心作者</strong><span class="badge coral">回复偏低</span></div><div class="where">18 人 · 直接邮件</div><div class="tags"><span class="tag">预测回复率 20%</span><span class="tag">实际 12%</span></div></div>
+            </div>
+            <div class="acts" data-slot><button class="btn primary" data-act="ok">优先实验室</button><button class="btn" data-act="both">实验室与前员工并行</button><button class="btn" data-act="skip">稍后决定</button></div>
+          </section>
+          <section class="dec" data-decision="weiss">
+            <div class="dec-k">第 3 步 · 导师推荐信</div>
+            <h2>致 Weiss 教授的推荐请求</h2>
+            <div class="quote"><small>写给 Prof. Hannah Weiss（示例）</small>We're building protein-design models at an AI-for-science lab and are looking for one researcher who has shipped structure-prediction work end to end. If anyone in your group is finishing up and might be interested, I'd be grateful for an introduction. I'm Lance's AI assistant; Lance will follow up personally.</div>
+            <p class="foot">导师信件始终需确认后发送。</p>
+            <div class="acts" data-slot><button class="btn primary" data-act="ok">发送</button><button class="btn" data-act="edit">修改</button><button class="btn" data-act="skip">暂不发送</button></div>
+          </section>
         </article>
-
-        <article class="card" data-decision="weiss">
-          <div class="eyebrow amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>等待决策 · 招聘 · 写给导师</div>
-          <h2>请 Weiss 教授推荐学生的信写好了</h2>
-          <div class="quote"><small>写给 Prof. Hannah Weiss（示例）</small>We're building protein-design models at an AI-for-science lab and are looking for one researcher who has shipped structure-prediction work end to end. If anyone in your group is finishing up and might be interested, I'd be grateful for an introduction. I'm Lance's AI assistant; Lance will follow up personally.</div>
-          <p class="foot">写给导师的信一直要你确认，不会因为命中率高就自动发。</p>
-          <div class="acts" data-slot><button class="btn primary" data-act="ok">就这么发</button><button class="btn" data-act="edit">我改一下</button><button class="btn" data-act="skip">先不发</button></div>
-        </article>
-
-        <div class="divider">昨天<b>晚间汇报</b></div>
       </div>
 
       <div class="view" id="lv-tasks" role="tabpanel" aria-labelledby="ltab-tasks" hidden>
+        <div class="mem-title">周报<span>每周五 18:00 生成</span></div>
+        <div class="weeks" data-week="lance"></div>
+        <div class="mem-title">任务</div>
         <article class="card">
-          <div class="eyebrow">招聘 · 进行中</div>
-          <h2>计算生物研究员（蛋白质设计）</h2>
-          <div class="subs"><div class="sub"><div class="sub-head"><span class="d"></span><strong>回复 7 / 25 · 预测 8</strong><span class="badge amber">周五出结果</span></div><div class="where">目标：11 月底前约到 2 位进终面</div></div></div>
-        </article>
-        <article class="card">
-          <div class="eyebrow">招聘 · 已结束</div>
           <div class="subs">
-            <div class="sub"><div class="sub-head"><span class="d"></span><strong>数据工程师</strong><span class="badge">命中 · 已入职 1 人</span></div><div class="where">预测 8 周内招到，实际 7 周。人来自前同事引荐</div></div>
-            <div class="sub"><div class="sub-head"><span class="d" style="background:var(--coral)"></span><strong>实验自动化工程师</strong><span class="badge coral">没中 · 暂停</span></div><div class="where">预测 30 人里 6 人回复，实际 2 人。复盘：画像定得太宽，顶尖的那群没找准</div></div>
+            <div class="sub"><div class="sub-head"><span class="d"></span><strong>计算生物研究员（蛋白质设计）</strong><span class="badge">进行中</span></div><div class="where">回复 7 / 25 · 预测 8 · 周五评估</div></div>
+            <div class="sub"><div class="sub-head"><span class="d"></span><strong>数据工程师</strong><span class="badge">已命中</span></div><div class="where">预测 8 周，实际 7 周入职</div></div>
+            <div class="sub"><div class="sub-head"><span class="d" style="background:var(--coral)"></span><strong>实验自动化工程师</strong><span class="badge coral">未命中</span></div><div class="where">回复 2 / 30（预测 6）；画像过宽，已暂停</div></div>
           </div>
+          <p class="foot">新任务在左侧对话中发起；分身先给出计划与预期，确认后执行。</p>
         </article>
       </div>
 
       <div class="view" id="lv-twin" role="tabpanel" aria-labelledby="ltab-twin" hidden>
         <div class="mem" data-mem="lance"></div>
-        <div class="mem-title">授权平台<span>招聘要用到的平台；授权和撤销都在这里</span></div>
+        <div class="mem-title">授权平台<span>按需授权，可随时撤销</span></div>
         <article class="card">
-          <p class="lede">每个平台只开招聘需要的权限，分身不会自己去申请新权限；撤销后马上生效。</p>
+          
           <div class="subs">
-            <div class="sub" data-conn-row="l_mail"><div class="sub-head"><span class="d"></span><strong>邮箱（Google Workspace）</strong><span class="badge" data-badge>已连接</span><button class="link-btn" type="button" data-conn="l_mail">管理</button></div><div class="where">起草和发送邮件、读候选人的回复。第一次联系要你确认才发</div></div>
-            <div class="sub" data-conn-row="l_cal"><div class="sub-head"><span class="d"></span><strong>日历</strong><span class="badge" data-badge>已连接</span><button class="link-btn" type="button" data-conn="l_cal">管理</button></div><div class="where">约聊、约面试时看你的空档，发邀请</div></div>
-            <div class="sub" data-conn-row="l_li"><div class="sub-head"><span class="d light"></span><strong>LinkedIn</strong><span class="badge amber" data-badge>只起草</span><button class="link-btn" type="button" data-conn="l_li">管理</button></div><div class="where">它的开放接口不让第三方搜人、发私信。分身只整理候选人资料、写好消息，由你自己发。公司如果买了 LinkedIn Recruiter，可以经它认可的招聘系统接入（待核实）</div></div>
-            <div class="sub" data-conn-row="l_pub"><div class="sub-head"><span class="d"></span><strong>论文库（Semantic Scholar、PubMed、Google Scholar）</strong><span class="badge">公开数据</span><span class="no-auth">不用授权</span></div><div class="where">按方向找一作、通讯作者和他们的实验室，判断“近 3 年有没有一作论文”</div></div>
-            <div class="sub" data-conn-row="l_gh"><div class="sub-head"><span class="d"></span><strong>GitHub</strong><span class="badge">公开数据</span><span class="no-auth">不用授权</span></div><div class="where">找开源工具的核心作者和合作者</div></div>
-            <div class="sub" data-conn-row="l_lab"><div class="sub-head"><span class="d"></span><strong>实验室主页</strong><span class="badge">公开数据</span><span class="no-auth">不用授权</span></div><div class="where">看导师带了哪些学生和博士后、谁快毕业</div></div>
-            <div class="sub" data-conn-row="l_ats"><div class="sub-head"><span class="d light"></span><strong>招聘系统（Ashby、Greenhouse 等）</strong><span class="badge grey" data-badge>未连接</span><button class="link-btn" type="button" data-conn="l_ats">授权</button></div><div class="where">连上后候选人进度自动同步，面试反馈能直接拿来复盘</div></div>
+            <div class="sub" data-conn-row="l_mail"><div class="sub-head"><span class="d"></span><strong>邮箱（Google Workspace）</strong><span class="badge" data-badge>已连接</span><button class="link-btn" type="button" data-conn="l_mail">管理</button></div><div class="where">起草、发送邮件并读取回复；首次联系需确认</div></div>
+            <div class="sub" data-conn-row="l_cal"><div class="sub-head"><span class="d"></span><strong>日历</strong><span class="badge" data-badge>已连接</span><button class="link-btn" type="button" data-conn="l_cal">管理</button></div><div class="where">查看空档，发送约聊与面试邀请</div></div>
+            <div class="sub" data-conn-row="l_li"><div class="sub-head"><span class="d light"></span><strong>LinkedIn</strong><span class="badge amber" data-badge>只起草</span><button class="link-btn" type="button" data-conn="l_li">管理</button></div><div class="where">接口不支持第三方搜人与私信；分身整理资料、起草消息，由本人发送</div></div>
+            <div class="sub" data-conn-row="l_pub"><div class="sub-head"><span class="d"></span><strong>论文库（Semantic Scholar、PubMed、Google Scholar）</strong><span class="badge">公开数据</span><span class="no-auth">无需授权</span></div><div class="where">检索方向内的一作、通讯作者及其实验室</div></div>
+            <div class="sub" data-conn-row="l_gh"><div class="sub-head"><span class="d"></span><strong>GitHub</strong><span class="badge">公开数据</span><span class="no-auth">无需授权</span></div><div class="where">检索开源工具核心作者</div></div>
+            <div class="sub" data-conn-row="l_lab"><div class="sub-head"><span class="d"></span><strong>实验室主页</strong><span class="badge">公开数据</span><span class="no-auth">无需授权</span></div><div class="where">查看在读学生、博士后及毕业时间</div></div>
+            <div class="sub" data-conn-row="l_ats"><div class="sub-head"><span class="d light"></span><strong>招聘系统（Ashby、Greenhouse 等）</strong><span class="badge grey" data-badge>未连接</span><button class="link-btn" type="button" data-conn="l_ats">授权</button></div><div class="where">授权后同步候选人进度与面试反馈</div></div>
           </div>
-          <div class="acts"><button class="btn primary" type="button" data-say="帮我连上招聘系统">授权新平台</button><button class="btn" type="button" data-say="LinkedIn 现在能做到哪一步？">问分身</button></div>
         </article>
-        <div class="mem-title">规则<span>每一步能自己做多少主，按最近的命中率自动放手或收回</span></div>
+        <div class="mem-title">规则<span>按近期命中率调整自主权限</span></div>
         <article class="card">
           <div class="subs">
-            <div class="sub level"><div class="n"><strong>跟进已回复的人</strong><span>约时间、发资料</span></div><div class="hits"><i class="h"></i><i class="h"></i><i class="h"></i><i class="h"></i><i class="h"></i><i class="h"></i><i class="m"></i><i class="h"></i><i class="h"></i><i class="h"></i></div><span class="badge">自己做</span></div>
-            <div class="sub level"><div class="n"><strong>第一次联系候选人</strong><span>邮件；LinkedIn 只起草</span></div><div class="hits"><i class="h"></i><i class="m"></i><i class="h"></i><i class="h"></i><i class="m"></i><i class="h"></i><i class="h"></i><i></i><i></i><i></i></div><span class="badge amber">要你确认 · 差 3 次</span></div>
-            <div class="sub level"><div class="n"><strong>写给导师</strong><span>请推荐学生</span></div><div class="hits"><i class="h"></i><i class="h"></i><i class="h"></i><i class="h"></i><i class="m"></i><i class="h"></i><i></i><i></i><i></i><i></i></div><span class="badge grey">一直要你确认</span></div>
+            <div class="sub level"><div class="n"><strong>跟进已回复的人</strong><span>约时间、发资料</span></div><div class="hits"><i class="h"></i><i class="h"></i><i class="h"></i><i class="h"></i><i class="h"></i><i class="h"></i><i class="m"></i><i class="h"></i><i class="h"></i><i class="h"></i></div><span class="badge">自主执行</span></div>
+            <div class="sub level"><div class="n"><strong>第一次联系候选人</strong><span>邮件；LinkedIn 只起草</span></div><div class="hits"><i class="h"></i><i class="m"></i><i class="h"></i><i class="h"></i><i class="m"></i><i class="h"></i><i class="h"></i><i></i><i></i><i></i></div><span class="badge amber">需确认 · 差 3 次</span></div>
+            <div class="sub level"><div class="n"><strong>写给导师</strong><span>请推荐学生</span></div><div class="hits"><i class="h"></i><i class="h"></i><i class="h"></i><i class="h"></i><i class="m"></i><i class="h"></i><i></i><i></i><i></i><i></i></div><span class="badge grey">始终需确认</span></div>
           </div>
         </article>
       </div>
@@ -1051,15 +1077,13 @@ button.tool.off:hover{background:color-mix(in srgb, var(--amber) 14%, #fff)}
     </div>
     <div class="log" aria-live="polite">
       <div class="when">昨天 21:20</div>
-      <div class="bubble">晚间汇报：今天开了 2 场第一次会。Meridian 的 Priya 约了下周二带合伙人再聊，这是第 3 位进第二次会。离预计的 5 位还差 2 位，还有 6 天。</div>
-      <button class="brief-link" type="button" data-goto="progress"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></span>晚间汇报 · 11 月 10 日<span class="chev">›</span></button>
+      <div class="bubble report"><span class="rep-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>晚间汇报 · 11 月 10 日</span>今天开了 2 场第一次会。Meridian 的 Priya 约了下周二带合伙人再聊，这是第 3 位进第二次会。离预计的 5 位还差 2 位，还有 6 天。</div>
       <div class="when">今天 8:30</div>
-      <div class="bubble">早上好，Akasha。有 2 件事要你定：给 Priya 的跟进邮件，和 Wen Zhou 问的估值。估值按规矩我不回，转给你。</div>
-      <button class="brief-link" type="button" data-goto="progress"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></span>晨间汇报 · 11 月 11 日<span class="chev">›</span></button>
-      <div class="bubble" data-decision="akfollow">给 Priya 的跟进邮件写好了，附上她会上要的最近六周模拟记录：<span class="quote"><small>写给 Priya Nair · Meridian Ventures（示例）</small>Thanks for the time on Tuesday. As promised, attached are the last six weeks of simulation runs: each one was logged before the outcome was known and scored afterwards. Happy to walk your team through any of them next Tuesday. I'm Akasha's AI assistant; Akasha will be in the meeting.</span><span class="acts" data-slot><button class="btn primary" data-act="ok">就这么发</button><button class="btn" data-act="edit">我改一下</button><button class="btn" data-act="skip">先不发</button></span></div>
+      <div class="bubble report"><span class="rep-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>晨间汇报 · 11 月 11 日</span>早上好，Akasha。有 2 件事要你定：给 Priya 的跟进邮件，和 Wen Zhou 问的估值。估值按规矩我不回，转给你。</div>
+      <div class="bubble" data-decision="akfollow">给 Priya 的跟进邮件写好了，附上她会上要的最近六周模拟记录：<span class="quote"><small>写给 Priya Nair · Meridian Ventures（示例）</small>Thanks for the time on Tuesday. As promised, attached are the last six weeks of simulation runs: each one was logged before the outcome was known and scored afterwards. Happy to walk your team through any of them next Tuesday. I'm Akasha's AI assistant; Akasha will be in the meeting.</span><span class="acts" data-slot><button class="btn primary" data-act="ok">发送</button><button class="btn" data-act="edit">修改</button><button class="btn" data-act="skip">暂不发送</button></span></div>
     </div>
     <div class="suggest">
-      <button type="button" data-say="下周有哪些会？">下周有哪些会？</button>
+      <button type="button" data-goto="tasks">本周周报</button><button type="button" data-say="下周有哪些会？">下周有哪些会？</button>
       <button type="button" data-say="哪类投资人推进最快？">哪类推进最快？</button>
       <button type="button" data-say="帮我预演一下下周二的会">预演下周二的会</button>
       <button type="button" data-say="我想调整一下工作流程">调整流程</button>
@@ -1087,22 +1111,22 @@ button.tool.off:hover{background:color-mix(in srgb, var(--amber) 14%, #fff)}
           <section class="gsec">
             <div class="glabel">目标</div>
             <h2>12 位重点投资人里，约到 5 位第二次会</h2>
-            <p class="lede">第二次会指带合伙人来、或者开始要尽调材料的会。11-18 看结果，实际在 3 到 7 位之间就算命中。</p>
+            <p class="lede">第二次会：合伙人参会或进入尽调。11-18 评估，3 到 7 位视为命中。</p>
           </section>
           <section class="gsec">
             <div class="ghead"><div class="glabel">计划</div><button class="flow-edit" type="button" data-flow-edit><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>调整流程</button></div>
             <ol class="steps" data-flow="akasha">
-              <li data-tools="云端文档|投资机构官网" class="ok" data-who="1"><span class="sn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span><div class="sb"><div class="sh"><strong>列投资人名单</strong><span class="wlab">分身做，你确认</span><span class="badge " data-sbadge>已确认</span></div><div class="where">从 40 位里挑出 12 位重点，每位写清投过什么、为什么可能投我们</div></div></li>
-              <li data-tools="云端文档" class="ok" data-who="0"><span class="sn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span><div class="sb"><div class="sh"><strong>准备材料</strong><span class="wlab">分身做</span><span class="badge " data-sbadge>已完成</span></div><div class="where">BP、一页纸、模拟结果样例；按每位投资人关心的点各调一版</div></div></li>
-              <li data-tools="邮箱" class="ok" data-who="1"><span class="sn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span><div class="sb"><div class="sh"><strong>第一次联系</strong><span class="wlab">分身做，你确认</span><span class="badge " data-sbadge>12 / 12</span></div><div class="where">12 位都发出了，9 位回复</div></div></li>
-              <li data-tools="日历|云端文档" class="now" data-who="2"><span class="sn">4</span><div class="sb"><div class="sh"><strong>开会</strong><span class="wlab me">你自己做</span><span class="badge " data-sbadge>7 场</span></div><div class="where">会前分身写一页简报，重要的会先拿模拟的投资人练一遍（只在内部用）</div></div></li>
-              <li data-tools="邮箱" class="wait" data-who="1"><span class="sn">5</span><div class="sb"><div class="sh"><strong>会后跟进</strong><span class="wlab">分身做，你确认</span><span class="badge amber" data-sbadge>2 件等你定</span></div><div class="where">24 小时内发跟进邮件、补材料；估值和条款一律转给你</div></div></li>
-              <li data-tools="云端文档" class="todo" data-who="0"><span class="sn">6</span><div class="sb"><div class="sh"><strong>到期复盘</strong><span class="wlab">分身做</span></div><div class="where">11-18 看约到几位第二次会；哪类投资人推进快，下一批多放</div></div></li>
+              <li data-tools="云端文档|投资机构官网" class="ok" data-who="1"><span class="sn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span><div class="sb"><div class="sh"><strong>列投资人名单</strong><span class="wlab">分身执行，需确认</span><span class="badge " data-sbadge>已确认</span></div><div class="where">40 位中筛出 12 位，附投资记录与匹配理由</div></div></li>
+              <li data-tools="云端文档" class="ok" data-who="0"><span class="sn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span><div class="sb"><div class="sh"><strong>准备材料</strong><span class="wlab">分身执行</span><span class="badge " data-sbadge>已完成</span></div><div class="where">BP、一页纸、模拟样例，按投资人关注点定制</div></div></li>
+              <li data-tools="邮箱" class="ok" data-who="1"><span class="sn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span><div class="sb"><div class="sh"><strong>第一次联系</strong><span class="wlab">分身执行，需确认</span><span class="badge " data-sbadge>12 / 12</span></div><div class="where">12 位全部发出，9 位回复</div></div></li>
+              <li data-tools="日历|云端文档" class="now" data-who="2"><span class="sn">4</span><div class="sb"><div class="sh"><strong>开会</strong><span class="wlab me">本人负责</span><span class="badge " data-sbadge>7 场</span></div><div class="where">会前一页简报；重要会议先做内部预演</div></div></li>
+              <li data-tools="邮箱" class="wait" data-who="1"><span class="sn">5</span><div class="sb"><div class="sh"><strong>会后跟进</strong><span class="wlab">分身执行，需确认</span><span class="badge amber" data-sbadge>待决策 2</span></div><div class="where">24 小时内跟进；估值与条款转本人</div></div></li>
+              <li data-tools="云端文档" class="todo" data-who="0"><span class="sn">6</span><div class="sb"><div class="sh"><strong>到期复盘</strong><span class="wlab">分身执行</span></div><div class="where">11-18 统计第二次会，按推进速度调整下一批</div></div></li>
             </ol>
           </section>
           <section class="gsec">
             <div class="glabel">进展</div>
-            <p class="pnum">已约到 3 位第二次会，预计 5 位，还有 6 天</p>
+            <p class="pnum">第二次会 3 位 · 预计 5 位 · 剩 6 天</p>
             <div class="funnel num">
               <div class="frow"><span class="fl">名单</span><div class="fbar"><i style="width:100%"></i></div><span class="fv"><strong>12</strong></span></div>
               <div class="frow"><span class="fl">回复</span><div class="fbar"><i style="width:75%"></i><b style="left:66.7%"></b></div><span class="fv"><strong>9</strong> · 预计 8</span></div>
@@ -1111,65 +1135,62 @@ button.tool.off:hover{background:color-mix(in srgb, var(--amber) 14%, #fff)}
             </div>
             <div class="legend"><span><i style="background:var(--teal)"></i>实际</span><span><i style="background:var(--blue); border-radius:1px; width:3px"></i>预计</span></div>
             <div class="subs">
-              <div class="sub"><div class="sub-head"><span class="d"></span><strong>专看 AI for Science 的基金</strong><span class="badge">5 位里 2 位进第二次会</span></div><div class="where">推进最快。问得最多的是模拟结果怎么验证</div></div>
-              <div class="sub"><div class="sub-head"><span class="d light"></span><strong>综合类 AI 基金</strong><span class="badge grey">4 位里 1 位</span></div><div class="where">卡在“数据从哪来、别人能不能复制”</div></div>
-              <div class="sub"><div class="sub-head"><span class="d" style="background:var(--coral)"></span><strong>家办</strong><span class="badge coral">3 位里 0 位</span></div><div class="where">都还停在第一次会，更想先见团队</div></div>
+              <div class="sub"><div class="sub-head"><span class="d"></span><strong>专看 AI for Science 的基金</strong><span class="badge">2 / 5</span></div><div class="where">推进最快；主要关注模拟结果如何验证</div></div>
+              <div class="sub"><div class="sub-head"><span class="d light"></span><strong>综合类 AI 基金</strong><span class="badge grey">1 / 4</span></div><div class="where">卡点：数据来源与可复制性</div></div>
+              <div class="sub"><div class="sub-head"><span class="d" style="background:var(--coral)"></span><strong>家办</strong><span class="badge coral">0 / 3</span></div><div class="where">停留在第一次会，希望先见团队</div></div>
             </div>
-            <p class="foot">投资人和机构名都是示例。</p>
+            <p class="foot">机构与人名为示例。</p>
           </section>
-          <div class="acts"><button class="btn primary" type="button" data-say="下周有哪些会？">看下周的会</button><button class="btn" type="button" data-say="哪类投资人推进最快？">问分身</button></div>
         </article>
 
-        <article class="card" data-decision="akfollow">
-          <div class="eyebrow amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>等待决策 · 融资 · 第 5 步：会后跟进</div>
-          <h2>给 Priya 的跟进邮件写好了，附上最近六周的模拟记录</h2>
-          <div class="quote"><small>写给 Priya Nair · Meridian Ventures（示例）</small>Thanks for the time on Tuesday. As promised, attached are the last six weeks of simulation runs: each one was logged before the outcome was known and scored afterwards. Happy to walk your team through any of them next Tuesday. I'm Akasha's AI assistant; Akasha will be in the meeting.</div>
-          <p class="foot">邮件里没有估值和条款；结尾说明了是分身写的。会后跟进最近 10 次中 8 次，还差 2 次就能不用你确认。</p>
-          <div class="acts" data-slot><button class="btn primary" data-act="ok">就这么发</button><button class="btn" data-act="edit">我改一下</button><button class="btn" data-act="skip">先不发</button></div>
+        <article class="card decs">
+          <div class="eyebrow amber">待决策</div>
+          <section class="dec" data-decision="akfollow">
+            <div class="dec-k">第 5 步 · 会后跟进</div>
+            <h2>致 Priya 的跟进邮件（附六周模拟记录）</h2>
+            <div class="quote"><small>写给 Priya Nair · Meridian Ventures（示例）</small>Thanks for the time on Tuesday. As promised, attached are the last six weeks of simulation runs: each one was logged before the outcome was known and scored afterwards. Happy to walk your team through any of them next Tuesday. I'm Akasha's AI assistant; Akasha will be in the meeting.</div>
+            <p class="foot">不含估值与条款，已注明由分身撰写。</p>
+            <div class="acts" data-slot><button class="btn primary" data-act="ok">发送</button><button class="btn" data-act="edit">修改</button><button class="btn" data-act="skip">暂不发送</button></div>
+          </section>
+          <section class="dec" data-decision="akterms">
+            <div class="dec-k">第 5 步 · 转本人</div>
+            <h2>Wen Zhou 询问本轮估值与条款</h2>
+            <div class="quote"><small>Wen Zhou · Halcyon Bio Fund（示例）</small>Before we schedule a second call, could you share the valuation you're targeting for this round and the rough terms?</div>
+            <p class="foot">估值与条款由本人回复；分身已整理她此前的提问。</p>
+            <div class="acts" data-slot><button class="btn primary" data-act="ok">本人回复</button><button class="btn" data-act="call">约电话</button><button class="btn" data-act="skip">暂缓</button></div>
+          </section>
         </article>
-
-        <article class="card" data-decision="akterms">
-          <div class="eyebrow amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>等待决策 · 融资 · 转给你</div>
-          <h2>Wen Zhou 在邮件里问本轮估值和条款，分身没回</h2>
-          <div class="quote"><small>Wen Zhou · Halcyon Bio Fund（示例）</small>Before we schedule a second call, could you share the valuation you're targeting for this round and the rough terms?</div>
-          <p class="foot">估值和条款一律转给你。分身能做的是把她前两次会上问过的问题整理好，你回之前看一眼。</p>
-          <div class="acts" data-slot><button class="btn primary" data-act="ok">我自己回</button><button class="btn" data-act="call">约个电话谈</button><button class="btn" data-act="skip">先放着</button></div>
-        </article>
-
-        <div class="divider">昨天<b>晚间汇报</b></div>
       </div>
 
       <div class="view" id="av-tasks" role="tabpanel" aria-labelledby="atab-tasks" hidden>
+        <div class="mem-title">周报<span>每周五 18:00 生成</span></div>
+        <div class="weeks" data-week="akasha"></div>
+        <div class="mem-title">任务</div>
         <article class="card">
-          <div class="eyebrow">融资 · 进行中</div>
-          <h2>本轮融资：约到 5 位第二次会</h2>
-          <div class="subs"><div class="sub"><div class="sub-head"><span class="d"></span><strong>第二次会 3 / 12 · 预计 5</strong><span class="badge amber">11-18 看结果</span></div><div class="where">在第 4、5 步：开会、会后跟进</div></div></div>
-        </article>
-        <article class="card">
-          <div class="eyebrow">融资 · 排着</div>
           <div class="subs">
-            <div class="sub"><div class="sub-head"><span class="d light"></span><strong>下一批投资人名单</strong><span class="badge grey">等这批复盘</span></div><div class="where">复盘后按推进快的那类投资人多放</div></div>
+            <div class="sub"><div class="sub-head"><span class="d"></span><strong>本轮融资</strong><span class="badge">进行中</span></div><div class="where">第二次会 3 / 12 · 预计 5 · 11-18 评估</div></div>
+            <div class="sub"><div class="sub-head"><span class="d light"></span><strong>下一批投资人名单</strong><span class="badge grey">排队</span></div><div class="where">本批复盘后，侧重推进快的类型</div></div>
           </div>
-          <p class="foot">新任务直接在左边跟分身说，它会先给你计划和预计结果，你确认了才动手。</p>
+          <p class="foot">新任务在左侧对话中发起；分身先给出计划与预期，确认后执行。</p>
         </article>
       </div>
 
       <div class="view" id="av-twin" role="tabpanel" aria-labelledby="atab-twin" hidden>
         <div class="mem" data-mem="akasha"></div>
-        <div class="mem-title">授权平台<span>融资要用到的平台；授权和撤销都在这里</span></div>
+        <div class="mem-title">授权平台<span>按需授权，可随时撤销</span></div>
         <article class="card">
           <div class="subs">
-            <div class="sub" data-conn-row="a_mail"><div class="sub-head"><span class="d"></span><strong>邮箱（Google Workspace）</strong><span class="badge" data-badge>已连接</span><button class="link-btn" type="button" data-conn="a_mail">管理</button></div><div class="where">只读“投资人”文件夹；起草跟进邮件，发之前要你确认</div></div>
-            <div class="sub" data-conn-row="a_cal"><div class="sub-head"><span class="d"></span><strong>日历</strong><span class="badge" data-badge>已连接</span><button class="link-btn" type="button" data-conn="a_cal">管理</button></div><div class="where">看空档、发会议邀请，会前一天把简报放进日程</div></div>
-            <div class="sub" data-conn-row="a_drive"><div class="sub-head"><span class="d light"></span><strong>云端文档</strong><span class="badge amber" data-badge>只读</span><button class="link-btn" type="button" data-conn="a_drive">管理</button></div><div class="where">读你选定文件夹里的 BP、一页纸和模拟结果样例</div></div>
+            <div class="sub" data-conn-row="a_mail"><div class="sub-head"><span class="d"></span><strong>邮箱（Google Workspace）</strong><span class="badge" data-badge>已连接</span><button class="link-btn" type="button" data-conn="a_mail">管理</button></div><div class="where">仅读取「投资人」文件夹；跟进邮件发送前需确认</div></div>
+            <div class="sub" data-conn-row="a_cal"><div class="sub-head"><span class="d"></span><strong>日历</strong><span class="badge" data-badge>已连接</span><button class="link-btn" type="button" data-conn="a_cal">管理</button></div><div class="where">查看空档、发送邀请，会前一天附简报</div></div>
+            <div class="sub" data-conn-row="a_drive"><div class="sub-head"><span class="d light"></span><strong>云端文档</strong><span class="badge amber" data-badge>只读</span><button class="link-btn" type="button" data-conn="a_drive">管理</button></div><div class="where">读取指定文件夹中的融资材料</div></div>
           </div>
         </article>
-        <div class="mem-title">规则<span>每一步能自己做多少主，按最近的命中率自动放手或收回</span></div>
+        <div class="mem-title">规则<span>按近期命中率调整自主权限</span></div>
         <article class="card">
           <div class="subs">
-            <div class="sub level"><div class="n"><strong>约时间</strong><span>发会议邀请、改时间</span></div><div class="hits"><i class="h"></i><i class="h"></i><i class="h"></i><i class="h"></i><i class="h"></i><i class="h"></i><i class="h"></i><i class="h"></i><i class="h"></i><i class="h"></i></div><span class="badge">自己做</span></div>
-            <div class="sub level"><div class="n"><strong>会后跟进邮件</strong><span>补材料、确认下次会</span></div><div class="hits"><i class="h"></i><i class="h"></i><i class="m"></i><i class="h"></i><i class="h"></i><i class="h"></i><i class="m"></i><i class="h"></i><i></i><i></i></div><span class="badge amber">要你确认 · 差 2 次</span></div>
-            <div class="sub level"><div class="n"><strong>第一次联系</strong><span>写给新投资人</span></div><div class="hits"><i class="h"></i><i class="h"></i><i class="h"></i><i class="m"></i><i class="h"></i><i class="h"></i><i></i><i></i><i></i><i></i></div><span class="badge grey">一直要你确认</span></div>
+            <div class="sub level"><div class="n"><strong>约时间</strong><span>发会议邀请、改时间</span></div><div class="hits"><i class="h"></i><i class="h"></i><i class="h"></i><i class="h"></i><i class="h"></i><i class="h"></i><i class="h"></i><i class="h"></i><i class="h"></i><i class="h"></i></div><span class="badge">自主执行</span></div>
+            <div class="sub level"><div class="n"><strong>会后跟进邮件</strong><span>补材料、确认下次会</span></div><div class="hits"><i class="h"></i><i class="h"></i><i class="m"></i><i class="h"></i><i class="h"></i><i class="h"></i><i class="m"></i><i class="h"></i><i></i><i></i></div><span class="badge amber">需确认 · 差 2 次</span></div>
+            <div class="sub level"><div class="n"><strong>第一次联系</strong><span>写给新投资人</span></div><div class="hits"><i class="h"></i><i class="h"></i><i class="h"></i><i class="m"></i><i class="h"></i><i class="h"></i><i></i><i></i><i></i><i></i></div><span class="badge grey">始终需确认</span></div>
           </div>
         </article>
       </div>
@@ -1189,15 +1210,13 @@ button.tool.off:hover{background:color-mix(in srgb, var(--amber) 14%, #fff)}
     </div>
     <div class="log" aria-live="polite">
       <div class="when">昨天 22:10</div>
-      <div class="bubble">晚间汇报：第 3 组参数跑完了，和前两组对不上。“存款撑不过一年的人里坏结局最多”这条，坏结局的比例从 3 成多变到 5 成，主要是换了一份存款分布数据。</div>
-      <button class="brief-link" type="button" data-goto="progress"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></span>晚间汇报 · 11 月 10 日<span class="chev">›</span></button>
+      <div class="bubble report"><span class="rep-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>晚间汇报 · 11 月 10 日</span>第 3 组参数跑完了，和前两组对不上。“存款撑不过一年的人里坏结局最多”这条，坏结局的比例从 3 成多变到 5 成，主要是换了一份存款分布数据。</div>
       <div class="when">今天 8:30</div>
-      <div class="bubble">早上好，俊成。第 3 组要你定一下：先查原因，还是先排除。这组会影响 Ellie 第一期的第 2 条结论，我已经告诉 Ellie 的分身先别定稿。</div>
-      <button class="brief-link" type="button" data-goto="progress"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></span>晨间汇报 · 11 月 11 日<span class="chev">›</span></button>
-      <div class="bubble" data-decision="jcgroup3">第 3 组怎么处理？我倾向先查原因，大概多花 1 天：<span class="acts" data-slot><button class="btn primary" data-act="ok">先查原因</button><button class="btn" data-act="ex">先排除，结果里标明</button><button class="btn" data-act="pair">叫上东奇一起看</button></span></div>
+      <div class="bubble report"><span class="rep-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>晨间汇报 · 11 月 11 日</span>早上好，俊成。第 3 组要你定一下：先查原因，还是先排除。这组会影响 Ellie 第一期的第 2 条结论，我已经告诉 Ellie 的分身先别定稿。</div>
+      <div class="bubble" data-decision="jcgroup3">第 3 组怎么处理？我倾向先查原因，大概多花 1 天：<span class="acts" data-slot><button class="btn primary" data-act="ok">先查原因</button><button class="btn" data-act="ex">排除并标注</button><button class="btn" data-act="pair">与东奇共同排查</button></span></div>
     </div>
     <div class="suggest">
-      <button type="button" data-say="第 3 组为什么对不上？">第 3 组为什么对不上？</button><button type="button" data-say="这 5 组参数都是从哪来的？">参数从哪来？</button><button type="button" data-say="剩下的还要多久跑完？">还要多久？</button>
+      <button type="button" data-goto="tasks">本周周报</button><button type="button" data-say="第 3 组为什么对不上？">第 3 组为什么对不上？</button><button type="button" data-say="这 5 组参数都是从哪来的？">参数从哪来？</button><button type="button" data-say="剩下的还要多久跑完？">还要多久？</button>
       <button type="button" data-say="我想调整一下工作流程">调整流程</button>
     </div>
     <form class="composer">
@@ -1222,56 +1241,56 @@ button.tool.off:hover{background:color-mix(in srgb, var(--amber) 14%, #fff)}
           <div class="eyebrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5M4 19h16M8 15l3-4 3 2 5-6"/></svg>研发 · 11-08 → 11-15</div>
           <section class="gsec">
             <div class="glabel">目标</div>
-            <h2>确认模拟结果换一组参数还站得住：5 组参数里至少 4 组结论一致</h2>
-            <p class="lede">结论一致指主要结论的方向不变、数的差别在 2 成以内。周五看结果，4 组或以上一致就算预期对了。</p>
+            <h2>验证参数稳健性：5 组参数中至少 4 组结论一致</h2>
+            <p class="lede">一致：结论方向不变、数值差 20% 以内。周五评估，4 组及以上一致即符合预期。</p>
           </section>
           <section class="gsec">
             <div class="ghead"><div class="glabel">计划</div><button class="flow-edit" type="button" data-flow-edit><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>调整流程</button></div>
             <ol class="steps" data-flow="junc">
-              <li data-tools="" class="ok" data-who="2"><span class="sn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span><div class="sb"><div class="sh"><strong>写清要验证什么，先写预期</strong><span class="wlab me">你自己做</span><span class="badge " data-sbadge>已写好</span></div><div class="where">预期 5 组里 4 组一致；最没把握的是存款分布那组</div></div></li><li data-tools="论文库|云端文档" class="ok" data-who="0"><span class="sn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span><div class="sb"><div class="sh"><strong>查资料、搭实验</strong><span class="wlab">分身做</span><span class="badge " data-sbadge>已完成</span></div><div class="where">5 组参数各有出处：公开统计、文献、两份不同的存款分布数据</div></div></li><li data-tools="计算资源|GitHub" class="now" data-who="0"><span class="sn">3</span><div class="sb"><div class="sh"><strong>跑实验</strong><span class="wlab">分身做</span><span class="badge " data-sbadge>3 / 5</span></div><div class="where">每组跑 10 万次，固定随机种子，保证能复现</div></div></li><li data-tools="" class="wait" data-who="2"><span class="sn">4</span><div class="sb"><div class="sh"><strong>看结果、决定下一步</strong><span class="wlab me">你自己做</span><span class="badge amber" data-sbadge>1 件等你定</span></div><div class="where">第 3 组和前两组对不上，先查原因还是先排除</div></div></li><li data-tools="云端文档" class="todo" data-who="0"><span class="sn">5</span><div class="sb"><div class="sh"><strong>复盘：预期和实际差多少</strong><span class="wlab">分身做</span></div><div class="where">周五对照预期，写清哪组为什么不一致</div></div></li>
+              <li data-tools="" class="ok" data-who="2"><span class="sn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span><div class="sb"><div class="sh"><strong>写清要验证什么，先写预期</strong><span class="wlab me">本人负责</span><span class="badge " data-sbadge>已写好</span></div><div class="where">预期 4 / 5 组一致；存款分布组风险最高</div></div></li><li data-tools="论文库|云端文档" class="ok" data-who="0"><span class="sn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span><div class="sb"><div class="sh"><strong>查资料、搭实验</strong><span class="wlab">分身执行</span><span class="badge " data-sbadge>已完成</span></div><div class="where">参数均有出处：公开统计、文献、两份存款分布数据</div></div></li><li data-tools="计算资源|GitHub" class="now" data-who="0"><span class="sn">3</span><div class="sb"><div class="sh"><strong>跑实验</strong><span class="wlab">分身执行</span><span class="badge " data-sbadge>3 / 5</span></div><div class="where">每组 10 万次，固定随机种子以便复现</div></div></li><li data-tools="" class="wait" data-who="2"><span class="sn">4</span><div class="sb"><div class="sh"><strong>看结果、决定下一步</strong><span class="wlab me">本人负责</span><span class="badge amber" data-sbadge>待决策</span></div><div class="where">第 3 组与前两组不一致，处理方式待定</div></div></li><li data-tools="云端文档" class="todo" data-who="0"><span class="sn">5</span><div class="sb"><div class="sh"><strong>复盘：预期和实际差多少</strong><span class="wlab">分身执行</span></div><div class="where">周五对照预期，说明不一致原因</div></div></li>
             </ol>
           </section>
           <section class="gsec">
             <div class="glabel">进展</div>
-            <p class="pnum">跑完 3 组：2 组一致，1 组对不上</p>
-            <div class="subs"><div class="sub"><div class="sub-head"><span class="d"></span><strong>第 1 组 · 公开统计的默认参数</strong><span class="badge ">一致</span></div></div><div class="sub"><div class="sub-head"><span class="d"></span><strong>第 2 组 · 收入恢复期拉长一倍</strong><span class="badge ">一致</span></div></div><div class="sub"><div class="sub-head"><span class="d" style="background:var(--coral)"></span><strong>第 3 组 · 换一份存款分布数据</strong><span class="badge coral">对不上</span></div><div class="where">坏结局比例从 3 成多变到 5 成，差得太多</div></div><div class="sub"><div class="sub-head"><span class="d light"></span><strong>第 4、5 组 · 两组极端情况</strong><span class="badge grey">排队中</span></div><div class="where">今晚跑完</div></div></div>
-            <p class="foot">第 3 组影响 Ellie 第一期的第 2 条结论，结果会同步给 Ellie 的分身。参数和数字都是示例。</p>
+            <p class="pnum">已完成 3 组：2 组一致，1 组不一致</p>
+            <div class="subs"><div class="sub"><div class="sub-head"><span class="d"></span><strong>第 1 组 · 公开统计的默认参数</strong><span class="badge ">一致</span></div></div><div class="sub"><div class="sub-head"><span class="d"></span><strong>第 2 组 · 收入恢复期拉长一倍</strong><span class="badge ">一致</span></div></div><div class="sub"><div class="sub-head"><span class="d" style="background:var(--coral)"></span><strong>第 3 组 · 换一份存款分布数据</strong><span class="badge coral">不一致</span></div><div class="where">坏结局占比从 3 成升至 5 成</div></div><div class="sub"><div class="sub-head"><span class="d light"></span><strong>第 4、5 组 · 两组极端情况</strong><span class="badge grey">排队中</span></div><div class="where">今晚跑完</div></div></div>
+            <p class="foot">第 3 组影响 Ellie 第一期第 2 条结论，结果将同步。数字为示例。</p>
           </section>
-          <div class="acts"><button class="btn primary" type="button" data-say="第 3 组为什么对不上？">第 3 组为什么对不上？</button><button class="btn" type="button" data-say="这 5 组参数都是从哪来的？">问分身</button></div>
         </article>
 
-        <article class="card" data-decision="jcgroup3">
-          <div class="eyebrow amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>等待决策 · 研发 · 第 4 步：看结果、决定下一步</div>
-          <h2>第 3 组和前两组对不上，先查原因还是先排除？</h2>
-          <div class="subs"><div class="sub"><div class="sub-head"><span class="d"></span><strong>先查原因</strong><span class="badge ">分身建议</span></div><div class="where">比对两份存款数据差在哪、哪份更接近要模拟的人群。多花 1 天</div></div><div class="sub"><div class="sub-head"><span class="d light"></span><strong>先排除，结果里标明</strong><span class="badge "></span></div><div class="where">按时出结果，但第 2 条结论要加一句“换数据会变”</div></div></div><p class="foot">要不要放进视频是 Ellie 定的；这里只定研发这边怎么处理。</p>
-          <div class="acts" data-slot><button class="btn primary" data-act="ok">先查原因</button><button class="btn" data-act="ex">先排除，结果里标明</button><button class="btn" data-act="pair">叫上东奇一起看</button></div>
+        <article class="card decs">
+          <div class="eyebrow amber">待决策</div>
+          <section class="dec" data-decision="jcgroup3">
+            <div class="dec-k">第 4 步 · 第 3 组处理</div>
+            <h2>第 3 组结果不一致，如何处理？</h2>
+            <div class="subs"><div class="sub"><div class="sub-head"><span class="d"></span><strong>先查原因</strong><span class="badge ">建议</span></div><div class="where">比对两份存款数据，选更贴近目标人群的一份；多 1 天</div></div><div class="sub"><div class="sub-head"><span class="d light"></span><strong>先排除，结果里标明</strong><span class="badge "></span></div><div class="where">按时交付，第 2 条结论注明对数据敏感</div></div></div><p class="foot">是否进入视频由 Ellie 决定。</p>
+            <div class="acts" data-slot><button class="btn primary" data-act="ok">先查原因</button><button class="btn" data-act="ex">排除并标注</button><button class="btn" data-act="pair">与东奇共同排查</button></div>
+          </section>
         </article>
-
-        <div class="divider">昨天<b>晚间汇报</b></div>
       </div>
 
       <div class="view" id="jv-tasks" role="tabpanel" aria-labelledby="jtab-tasks" hidden>
+        <div class="mem-title">周报<span>每周五 18:00 生成</span></div>
+        <div class="weeks" data-week="junc"></div>
+        <div class="mem-title">任务</div>
         <article class="card">
-          <div class="eyebrow">研发 · 进行中</div>
-          <h2>换参数后结果还稳不稳</h2>
-          <div class="subs"><div class="sub"><div class="sub-head"><span class="d"></span><strong>已跑 3 / 5 组 · 预期 4 组一致</strong><span class="badge amber">周五看结果</span></div><div class="where">给运营第一期和融资材料用</div></div></div>
-        </article>
-        <article class="card">
-          <div class="eyebrow">研发 · 已结束</div>
-          <div class="subs"><div class="sub"><div class="sub-head"><span class="d"></span><strong>上一版模型基线测试</strong><span class="badge ">命中 · 预期 8 组一致，实际 9 组</span></div><div class="where">预期写在第一行，跑完没改</div></div></div>
-          <p class="foot">新任务直接在左边跟分身说，它会先写预期和计划，你确认了才动手。</p>
+          <div class="subs">
+            <div class="sub"><div class="sub-head"><span class="d"></span><strong>参数稳健性验证</strong><span class="badge">进行中</span></div><div class="where">3 / 5 组 · 预期 4 组一致 · 周五评估</div></div>
+            <div class="sub"><div class="sub-head"><span class="d"></span><strong>上一版模型基线测试</strong><span class="badge">已命中</span></div><div class="where">预期 8 组一致，实际 9 组</div></div>
+          </div>
+          <p class="foot">新任务在左侧对话中发起；分身先给出计划与预期，确认后执行。</p>
         </article>
       </div>
 
       <div class="view" id="jv-twin" role="tabpanel" aria-labelledby="jtab-twin" hidden>
         <div class="mem" data-mem="junc"></div>
-        <div class="mem-title">授权平台<span>研发要用到的平台；授权和撤销都在这里</span></div>
+        <div class="mem-title">授权平台<span>按需授权，可随时撤销</span></div>
         <article class="card">
-          <div class="subs"><div class="sub" data-conn-row="j_gh"><div class="sub-head"><span class="d"></span><strong>GitHub · 模型仓库</strong><span class="badge " data-badge>已连接</span><button class="link-btn" type="button" data-conn="j_gh">管理</button></div><div class="where">读代码、开分支提交；合并到主线要你确认</div></div><div class="sub" data-conn-row="j_run"><div class="sub-head"><span class="d"></span><strong>计算资源</strong><span class="badge " data-badge>已连接</span><button class="link-btn" type="button" data-conn="j_run">管理</button></div><div class="where">跑模拟。单次超过预算要你确认</div></div><div class="sub" data-conn-row="j_drive"><div class="sub-head"><span class="d light"></span><strong>云端文档</strong><span class="badge amber" data-badge>只读</span><button class="link-btn" type="button" data-conn="j_drive">管理</button></div><div class="where">读参数表和实验记录</div></div></div>
+          <div class="subs"><div class="sub" data-conn-row="j_gh"><div class="sub-head"><span class="d"></span><strong>GitHub · 模型仓库</strong><span class="badge " data-badge>已连接</span><button class="link-btn" type="button" data-conn="j_gh">管理</button></div><div class="where">读代码、提交分支；合并主线需确认</div></div><div class="sub" data-conn-row="j_run"><div class="sub-head"><span class="d"></span><strong>计算资源</strong><span class="badge " data-badge>已连接</span><button class="link-btn" type="button" data-conn="j_run">管理</button></div><div class="where">运行模拟；单次超预算需确认</div></div><div class="sub" data-conn-row="j_drive"><div class="sub-head"><span class="d light"></span><strong>云端文档</strong><span class="badge amber" data-badge>只读</span><button class="link-btn" type="button" data-conn="j_drive">管理</button></div><div class="where">读取参数表与实验记录</div></div></div>
         </article>
-        <div class="mem-title">规则<span>每一步能自己做多少主，按最近的命中率自动放手或收回</span></div>
+        <div class="mem-title">规则<span>按近期命中率调整自主权限</span></div>
         <article class="card">
-          <div class="subs"><div class="sub level"><div class="n"><strong>跑实验</strong><span>按已定的参数</span></div><div class="hits"><i class="h"></i><i class="h"></i><i class="h"></i><i class="h"></i><i class="h"></i><i class="h"></i><i class="h"></i><i class="h"></i><i class="h"></i><i class="h"></i></div><span class="badge ">自己做</span></div><div class="sub level"><div class="n"><strong>改模型代码</strong><span>开分支、提合并</span></div><div class="hits"><i class="h"></i><i class="h"></i><i class="m"></i><i class="h"></i><i class="h"></i><i class="h"></i><i></i><i></i><i></i><i></i></div><span class="badge amber">要你确认 · 差 4 次</span></div><div class="sub level"><div class="n"><strong>对外公开结果</strong><span>论文、帖子、给投资人</span></div><div class="hits"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><span class="badge grey">一直要你确认</span></div></div>
+          <div class="subs"><div class="sub level"><div class="n"><strong>跑实验</strong><span>按已定的参数</span></div><div class="hits"><i class="h"></i><i class="h"></i><i class="h"></i><i class="h"></i><i class="h"></i><i class="h"></i><i class="h"></i><i class="h"></i><i class="h"></i><i class="h"></i></div><span class="badge ">自主执行</span></div><div class="sub level"><div class="n"><strong>改模型代码</strong><span>开分支、提合并</span></div><div class="hits"><i class="h"></i><i class="h"></i><i class="m"></i><i class="h"></i><i class="h"></i><i class="h"></i><i></i><i></i><i></i><i></i></div><span class="badge amber">需确认 · 差 4 次</span></div><div class="sub level"><div class="n"><strong>对外公开结果</strong><span>论文、帖子、给投资人</span></div><div class="hits"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><span class="badge grey">始终需确认</span></div></div>
         </article>
       </div>
     </div>
@@ -1290,15 +1309,13 @@ button.tool.off:hover{background:color-mix(in srgb, var(--amber) 14%, #fff)}
     </div>
     <div class="log" aria-live="polite">
       <div class="when">昨天 20:30</div>
-      <div class="bubble">晚间汇报：第一期的前 2 组假设复跑完了，和原结果分别差 1.2% 和 3.4%，都在 ±5% 以内。第 3 组今晚跑完。</div>
-      <button class="brief-link" type="button" data-goto="progress"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></span>晚间汇报 · 11 月 10 日<span class="chev">›</span></button>
+      <div class="bubble report"><span class="rep-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>晚间汇报 · 11 月 10 日</span>第一期的前 2 组假设复跑完了，和原结果分别差 1.2% 和 3.4%，都在 ±5% 以内。第 3 组今晚跑完。</div>
       <div class="when">今天 8:30</div>
-      <div class="bubble">早上好，东奇。复跑一致的部分，参数表和复跑脚本要不要公开？公开了谁都能自己验，但发出去就收不回，所以要你定。</div>
-      <button class="brief-link" type="button" data-goto="progress"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></span>晨间汇报 · 11 月 11 日<span class="chev">›</span></button>
-      <div class="bubble" data-decision="dqpub">Ellie 那边想在帖子首条回复里放来源。复跑的东西公开到哪一步？<span class="acts" data-slot><button class="btn primary" data-act="ok">参数表和脚本都公开</button><button class="btn" data-act="tbl">只公开参数表</button><button class="btn" data-act="skip">先不公开</button></span></div>
+      <div class="bubble report"><span class="rep-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>晨间汇报 · 11 月 11 日</span>早上好，东奇。复跑一致的部分，参数表和复跑脚本要不要公开？公开了谁都能自己验，但发出去就收不回，所以要你定。</div>
+      <div class="bubble" data-decision="dqpub">Ellie 那边想在帖子首条回复里放来源。复跑的东西公开到哪一步？<span class="acts" data-slot><button class="btn primary" data-act="ok">全部公开</button><button class="btn" data-act="tbl">只公开参数表</button><button class="btn" data-act="skip">暂不公开</button></span></div>
     </div>
     <div class="suggest">
-      <button type="button" data-say="差 3.4% 是哪来的？">差 3.4% 是哪来的？</button><button type="button" data-say="第 3 组什么时候跑完？">第 3 组什么时候跑完？</button><button type="button" data-say="俊成那边的问题影响我们吗？">俊成那边影响我们吗？</button>
+      <button type="button" data-goto="tasks">本周周报</button><button type="button" data-say="差 3.4% 是哪来的？">差 3.4% 是哪来的？</button><button type="button" data-say="第 3 组什么时候跑完？">第 3 组什么时候跑完？</button><button type="button" data-say="俊成那边的问题影响我们吗？">俊成那边影响我们吗？</button>
       <button type="button" data-say="我想调整一下工作流程">调整流程</button>
     </div>
     <form class="composer">
@@ -1323,56 +1340,56 @@ button.tool.off:hover{background:color-mix(in srgb, var(--amber) 14%, #fff)}
           <div class="eyebrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5M4 19h16M8 15l3-4 3 2 5-6"/></svg>研发 · 给运营第一期 · 11-09 → 11-13</div>
           <section class="gsec">
             <div class="glabel">目标</div>
-            <h2>用同样的参数复跑第一期的 3 组假设，确认结果一致后交给 Ellie</h2>
-            <p class="lede">一致指每条结论的数和原结果差在 ±5% 以内。对不上的结论不交，退回去查。</p>
+            <h2>复跑第一期 3 组假设，一致后交付 Ellie</h2>
+            <p class="lede">一致：各结论与原结果差 ±5% 以内；不一致的退回排查。</p>
           </section>
           <section class="gsec">
             <div class="ghead"><div class="glabel">计划</div><button class="flow-edit" type="button" data-flow-edit><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>调整流程</button></div>
             <ol class="steps" data-flow="dongqi">
-              <li data-tools="" class="ok" data-who="2"><span class="sn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span><div class="sb"><div class="sh"><strong>写清要验证什么，先写预期</strong><span class="wlab me">你自己做</span><span class="badge " data-sbadge>已写好</span></div><div class="where">预期 3 组都一致；最没把握的是随机种子不同带来的波动</div></div></li><li data-tools="GitHub|云端文档" class="ok" data-who="0"><span class="sn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span><div class="sb"><div class="sh"><strong>查资料、搭实验</strong><span class="wlab">分身做</span><span class="badge " data-sbadge>已完成</span></div><div class="where">拿 Ellie 那边的参数表和假设，独立搭一套环境，不共用原来的代码</div></div></li><li data-tools="计算资源|GitHub" class="now" data-who="0"><span class="sn">3</span><div class="sb"><div class="sh"><strong>跑实验</strong><span class="wlab">分身做</span><span class="badge " data-sbadge>2 / 3</span></div><div class="where">每组 10 万次，和原结果逐条比</div></div></li><li data-tools="" class="wait" data-who="2"><span class="sn">4</span><div class="sb"><div class="sh"><strong>看结果、决定下一步</strong><span class="wlab me">你自己做</span><span class="badge amber" data-sbadge>1 件等你定</span></div><div class="where">复跑一致的部分，参数表和脚本要不要公开</div></div></li><li data-tools="云端文档" class="todo" data-who="0"><span class="sn">5</span><div class="sb"><div class="sh"><strong>复盘：预期和实际差多少</strong><span class="wlab">分身做</span></div><div class="where">交给 Ellie 前写一页：哪些数一致、差多少、为什么</div></div></li>
+              <li data-tools="" class="ok" data-who="2"><span class="sn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span><div class="sb"><div class="sh"><strong>写清要验证什么，先写预期</strong><span class="wlab me">本人负责</span><span class="badge " data-sbadge>已写好</span></div><div class="where">预期 3 组一致；随机种子波动风险最高</div></div></li><li data-tools="GitHub|云端文档" class="ok" data-who="0"><span class="sn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span><div class="sb"><div class="sh"><strong>查资料、搭实验</strong><span class="wlab">分身执行</span><span class="badge " data-sbadge>已完成</span></div><div class="where">使用 Ellie 的参数表，独立搭建环境，不复用原代码</div></div></li><li data-tools="计算资源|GitHub" class="now" data-who="0"><span class="sn">3</span><div class="sb"><div class="sh"><strong>跑实验</strong><span class="wlab">分身执行</span><span class="badge " data-sbadge>2 / 3</span></div><div class="where">每组 10 万次，逐条对比原结果</div></div></li><li data-tools="" class="wait" data-who="2"><span class="sn">4</span><div class="sb"><div class="sh"><strong>看结果、决定下一步</strong><span class="wlab me">本人负责</span><span class="badge amber" data-sbadge>待决策</span></div><div class="where">复跑材料的公开范围待定</div></div></li><li data-tools="云端文档" class="todo" data-who="0"><span class="sn">5</span><div class="sb"><div class="sh"><strong>复盘：预期和实际差多少</strong><span class="wlab">分身执行</span></div><div class="where">交付前附一页对照：差异及原因</div></div></li>
             </ol>
           </section>
           <section class="gsec">
             <div class="glabel">进展</div>
-            <p class="pnum">复跑完 2 组，都在 ±5% 以内</p>
-            <div class="subs"><div class="sub"><div class="sub-head"><span class="d"></span><strong>第 1 组 · 原始假设</strong><span class="badge ">差 1.2%</span></div></div><div class="sub"><div class="sub-head"><span class="d"></span><strong>第 2 组 · 收入恢复期拉长</strong><span class="badge ">差 3.4%</span></div><div class="where">主要是随机种子不同，固定种子后差 0.3%</div></div><div class="sub"><div class="sub-head"><span class="d light"></span><strong>第 3 组 · 存款更少</strong><span class="badge grey">在跑</span></div><div class="where">今晚 11 点左右跑完</div></div></div>
-            <p class="foot">俊成那边发现换一份存款分布数据结果会变。复跑一致只能说明没算错，不能说明结论稳，这一点会写进交给 Ellie 的说明。数字都是示例。</p>
+            <p class="pnum">已复跑 2 组，均在 ±5% 以内</p>
+            <div class="subs"><div class="sub"><div class="sub-head"><span class="d"></span><strong>第 1 组 · 原始假设</strong><span class="badge ">差 1.2%</span></div></div><div class="sub"><div class="sub-head"><span class="d"></span><strong>第 2 组 · 收入恢复期拉长</strong><span class="badge ">差 3.4%</span></div><div class="where">源于随机种子，固定后差 0.3%</div></div><div class="sub"><div class="sub-head"><span class="d light"></span><strong>第 3 组 · 存款更少</strong><span class="badge grey">在跑</span></div><div class="where">预计今晚 23:00 完成</div></div></div>
+            <p class="foot">复跑一致仅说明计算无误，不代表结论稳健（见俊成第 3 组），将写入交付说明。数字为示例。</p>
           </section>
-          <div class="acts"><button class="btn primary" type="button" data-say="差 3.4% 是哪来的？">差 3.4% 是哪来的？</button><button class="btn" type="button" data-say="第 3 组什么时候跑完？">问分身</button></div>
         </article>
 
-        <article class="card" data-decision="dqpub">
-          <div class="eyebrow amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>等待决策 · 研发 · 第 4 步：看结果、决定下一步</div>
-          <h2>复跑一致的部分，参数表和复跑脚本要不要公开？</h2>
-          <div class="subs"><div class="sub"><div class="sub-head"><span class="d"></span><strong>参数表和脚本都公开</strong><span class="badge "></span></div><div class="where">谁都能自己跑一遍，最站得住；脚本里的内部路径要先清掉</div></div><div class="sub"><div class="sub-head"><span class="d light"></span><strong>只公开参数表</strong><span class="badge ">分身建议</span></div><div class="where">够别人看懂假设，脚本等第 3 组和俊成那边都清楚了再说</div></div></div><p class="foot">公开出去就收不回，所以一直要你定，不会因为命中率高就放手。</p>
-          <div class="acts" data-slot><button class="btn primary" data-act="ok">参数表和脚本都公开</button><button class="btn" data-act="tbl">只公开参数表</button><button class="btn" data-act="skip">先不公开</button></div>
+        <article class="card decs">
+          <div class="eyebrow amber">待决策</div>
+          <section class="dec" data-decision="dqpub">
+            <div class="dec-k">第 4 步 · 公开范围</div>
+            <h2>复跑的参数表与脚本是否公开？</h2>
+            <div class="subs"><div class="sub"><div class="sub-head"><span class="d"></span><strong>参数表和脚本都公开</strong><span class="badge "></span></div><div class="where">可完整复现，可信度最高；需先清理内部路径</div></div><div class="sub"><div class="sub-head"><span class="d light"></span><strong>只公开参数表</strong><span class="badge ">建议</span></div><div class="where">足以说明假设；脚本待第 3 组明确后再定</div></div></div><p class="foot">公开不可撤回，始终由本人决定。</p>
+            <div class="acts" data-slot><button class="btn primary" data-act="ok">全部公开</button><button class="btn" data-act="tbl">只公开参数表</button><button class="btn" data-act="skip">暂不公开</button></div>
+          </section>
         </article>
-
-        <div class="divider">昨天<b>晚间汇报</b></div>
       </div>
 
       <div class="view" id="dv-tasks" role="tabpanel" aria-labelledby="dtab-tasks" hidden>
+        <div class="mem-title">周报<span>每周五 18:00 生成</span></div>
+        <div class="weeks" data-week="dongqi"></div>
+        <div class="mem-title">任务</div>
         <article class="card">
-          <div class="eyebrow">研发 · 进行中</div>
-          <h2>第一期视频的复跑</h2>
-          <div class="subs"><div class="sub"><div class="sub-head"><span class="d"></span><strong>2 / 3 组一致</strong><span class="badge amber">今晚跑完</span></div><div class="where">一致才交给 Ellie</div></div></div>
-        </article>
-        <article class="card">
-          <div class="eyebrow">研发 · 已结束</div>
-          <div class="subs"><div class="sub"><div class="sub-head"><span class="d"></span><strong>复跑模型基线</strong><span class="badge ">命中 · 预期一致，实际一致</span></div><div class="where">差最大的一项 0.8%</div></div></div>
-          <p class="foot">新任务直接在左边跟分身说，它会先写预期和计划，你确认了才动手。</p>
+          <div class="subs">
+            <div class="sub"><div class="sub-head"><span class="d"></span><strong>第一期视频复跑</strong><span class="badge">进行中</span></div><div class="where">2 / 3 组一致 · 今晚完成</div></div>
+            <div class="sub"><div class="sub-head"><span class="d"></span><strong>复跑模型基线</strong><span class="badge">已命中</span></div><div class="where">预期一致，最大差异 0.8%</div></div>
+          </div>
+          <p class="foot">新任务在左侧对话中发起；分身先给出计划与预期，确认后执行。</p>
         </article>
       </div>
 
       <div class="view" id="dv-twin" role="tabpanel" aria-labelledby="dtab-twin" hidden>
         <div class="mem" data-mem="dongqi"></div>
-        <div class="mem-title">授权平台<span>研发要用到的平台；授权和撤销都在这里</span></div>
+        <div class="mem-title">授权平台<span>按需授权，可随时撤销</span></div>
         <article class="card">
-          <div class="subs"><div class="sub" data-conn-row="d_gh"><div class="sub-head"><span class="d"></span><strong>GitHub · 复跑仓库</strong><span class="badge " data-badge>已连接</span><button class="link-btn" type="button" data-conn="d_gh">管理</button></div><div class="where">独立的复跑代码；读原模型仓库，但不改</div></div><div class="sub" data-conn-row="d_run"><div class="sub-head"><span class="d"></span><strong>计算资源</strong><span class="badge " data-badge>已连接</span><button class="link-btn" type="button" data-conn="d_run">管理</button></div><div class="where">跑复跑。单次超过预算要你确认</div></div><div class="sub" data-conn-row="d_drive"><div class="sub-head"><span class="d light"></span><strong>云端文档</strong><span class="badge amber" data-badge>只读</span><button class="link-btn" type="button" data-conn="d_drive">管理</button></div><div class="where">读 Ellie 那边的参数表和假设</div></div></div>
+          <div class="subs"><div class="sub" data-conn-row="d_gh"><div class="sub-head"><span class="d"></span><strong>GitHub · 复跑仓库</strong><span class="badge " data-badge>已连接</span><button class="link-btn" type="button" data-conn="d_gh">管理</button></div><div class="where">独立复跑仓库；原仓库只读</div></div><div class="sub" data-conn-row="d_run"><div class="sub-head"><span class="d"></span><strong>计算资源</strong><span class="badge " data-badge>已连接</span><button class="link-btn" type="button" data-conn="d_run">管理</button></div><div class="where">运行复跑；单次超预算需确认</div></div><div class="sub" data-conn-row="d_drive"><div class="sub-head"><span class="d light"></span><strong>云端文档</strong><span class="badge amber" data-badge>只读</span><button class="link-btn" type="button" data-conn="d_drive">管理</button></div><div class="where">读取 Ellie 的参数表与假设</div></div></div>
         </article>
-        <div class="mem-title">规则<span>每一步能自己做多少主，按最近的命中率自动放手或收回</span></div>
+        <div class="mem-title">规则<span>按近期命中率调整自主权限</span></div>
         <article class="card">
-          <div class="subs"><div class="sub level"><div class="n"><strong>复跑</strong><span>按参数表重跑</span></div><div class="hits"><i class="h"></i><i class="h"></i><i class="h"></i><i class="h"></i><i class="h"></i><i class="h"></i><i class="h"></i><i class="h"></i><i class="h"></i><i></i></div><span class="badge ">自己做</span></div><div class="sub level"><div class="n"><strong>写复跑说明</strong><span>交给别的分身前</span></div><div class="hits"><i class="h"></i><i class="h"></i><i class="h"></i><i class="m"></i><i class="h"></i><i class="h"></i><i></i><i></i><i></i><i></i></div><span class="badge amber">要你确认 · 差 3 次</span></div><div class="sub level"><div class="n"><strong>公开参数和脚本</strong><span>发出去收不回</span></div><div class="hits"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><span class="badge grey">一直要你确认</span></div></div>
+          <div class="subs"><div class="sub level"><div class="n"><strong>复跑</strong><span>按参数表重跑</span></div><div class="hits"><i class="h"></i><i class="h"></i><i class="h"></i><i class="h"></i><i class="h"></i><i class="h"></i><i class="h"></i><i class="h"></i><i class="h"></i><i></i></div><span class="badge ">自主执行</span></div><div class="sub level"><div class="n"><strong>写复跑说明</strong><span>交给别的分身前</span></div><div class="hits"><i class="h"></i><i class="h"></i><i class="h"></i><i class="m"></i><i class="h"></i><i class="h"></i><i></i><i></i><i></i><i></i></div><span class="badge amber">需确认 · 差 3 次</span></div><div class="sub level"><div class="n"><strong>公开参数和脚本</strong><span>发出去收不回</span></div><div class="hits"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><span class="badge grey">始终需确认</span></div></div>
         </article>
       </div>
     </div>
@@ -1444,7 +1461,7 @@ button.tool.off:hover{background:color-mix(in srgb, var(--amber) 14%, #fff)}
     claims:{done:{ok:'两条结论定了，开始写脚本', skip:'再跑一组假设，明天给你结果', edit:'按你改的版本写脚本'},
             say:{ok:'好，我按这两条写脚本，周四给你看第一版。', skip:'好，我加一组“存款更少、行业更差”的假设再跑，明天给你。', edit:'按你改的写。改动我记下了，以后讲结论照这个口气。'},
             me:{ok:'就讲这两条', skip:'再跑一组假设'}, step:'结论已定',
-            draft:'1. 决定结局好坏的，主要不是创业成没成，而是失败以后多久能回到原来的收入。\n2. 存款撑不过一年的那些人生里，三组假设下坏结局都最多。'},
+            draft:'1. 结局好坏主要取决于失业后收入恢复所需时间，而非是否失业。\n2. 存款不足一年的样本中，坏结局占比最高。'},
     jcgroup3:{done:{ok:'先查原因：比对两份存款数据，周四给结论', ex:'第 3 组先排除，结果里标明“换数据会变”', pair:'已约东奇今天下午 3 点一起看'},
             say:{ok:'好。我先比对两份数据差在哪，周四给你结论，同步告诉 Ellie 的分身第 2 条结论晚一天定。', ex:'好，按时出结果。第 2 条结论我会让 Ellie 的分身加一句“换一份存款数据，结果会变”。', pair:'约好了。东奇那边复跑用的是同一份数据，正好一起看是数据的问题还是模型的问题。'},
             me:{ok:'先查原因', ex:'先排除，结果里标明', pair:'叫上东奇一起看'}},
@@ -1480,6 +1497,7 @@ button.tool.off:hover{background:color-mix(in srgb, var(--amber) 14%, #fff)}
     var me = (D[id].me && D[id].me[act]) || (act === 'ok' ? '好' : act === 'skip' ? '先不了' : (typed || '我改了一下'));
     if (act === 'edit') me = typed || '我改了一下';
     bubble(log, me, 'me'); twinSays(log, D[id].say[act]);
+    lastPick[id] = act === 'skip' ? '先放着' : act === 'edit' ? '按你改的' : ((D[id].me && D[id].me[act]) || ''); renderWeeks();
     if (act !== 'skip' && D[id].step) document.querySelectorAll('[data-step-of="' + id + '"]').forEach(function(li){
       li.className = 'ok'; li.querySelector('.sn').innerHTML = tick;
       var b = li.querySelector('[data-sbadge]'); if (b){ b.className = 'badge'; b.textContent = D[id].step; }
@@ -1497,6 +1515,69 @@ button.tool.off:hover{background:color-mix(in srgb, var(--amber) 14%, #fff)}
   }
 
 
+
+  // ---------- weekly reports (任务 → 周报) ----------
+  var WEEK = {
+    ellie:[
+      {w:'本周 · 11-10 至 11-14', sum:'第一版模拟完成，2 条结论稳定',
+       kpi:[['稳健结论','2 条','预计 2 到 3 条','达到'],['东奇复跑一致','2 / 3 组','预计 3 组','今晚完成']],
+       next:'完成脚本与横竖两版，周五前发布',
+       dec:[['signal','验证信号'],['claims','结论审核']]},
+      {w:'11-03 至 11-07', sum:'定了付费点和选题标准，系列定名', kpi:[['选题','12 个 → 留 3 个','','']], next:'跑第一期的模拟', dec:[]}
+    ],
+    lance:[
+      {w:'本周 · 11-10 至 11-14', sum:'触达 25 人，回复 7 人，低于预计 1 人',
+       kpi:[['回复','7 人','预计 8 人','差 1'],['直接写信','2 / 15','预计 4','偏低']],
+       next:'发出下一批；从回复者中选 2 位约聊',
+       dec:[['pools','下一批人群'],['weiss','致 Weiss 教授的信']]},
+      {w:'11-03 至 11-07', sum:'画像定了，找到三群人', kpi:[['候选名单','约 100 人','','']], next:'先给实验室那群写信', dec:[]}
+    ],
+    akasha:[
+      {w:'本周 · 11-10 至 11-14', sum:'第二次会 3 位，距预计差 2 位',
+       kpi:[['第二次会','3 位','预计 5 位','差 2'],['第一次会','7 场','预计 8 场','差 1']],
+       next:'周一提交 Priya 会议简报；家办改版材料',
+       dec:[['akfollow','Priya 跟进邮件'],['akterms','Wen Zhou 估值询问']]},
+      {w:'11-04 至 11-07', sum:'名单和材料备好，12 位都联系了', kpi:[['回复','6 / 12','预计 6','达到']], next:'开第一次会', dec:[]}
+    ],
+    junc:[
+      {w:'本周 · 11-10 至 11-14', sum:'完成 3 组参数，第 3 组不一致',
+       kpi:[['结论一致','2 / 3 组','预计 5 组里 4 组','还剩 2 组']],
+       next:'跑完第 4、5 组，周五写复盘',
+       dec:[['jcgroup3','第 3 组处理方式']]},
+      {w:'11-03 至 11-07', sum:'预期写好，5 组参数找齐出处', kpi:[], next:'开始跑实验', dec:[]}
+    ],
+    dongqi:[
+      {w:'本周 · 11-10 至 11-14', sum:'复跑 2 组，均与原结果一致',
+       kpi:[['和原结果一致','2 / 2 组','预计 3 组','今晚完成']],
+       next:'完成第 3 组，附对照交付 Ellie',
+       dec:[['dqpub','参数与脚本是否公开']]},
+      {w:'11-03 至 11-07', sum:'写好预期，拿到参数表', kpi:[], next:'搭环境、开始复跑', dec:[]}
+    ]
+  };
+  var CHEV = '<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>';
+  function weekHTML(r, open){
+    var tone = function(t){ return /差|少|低|还剩|没/.test(t) ? 'amber' : /超|达到/.test(t) ? '' : 'grey'; };
+    var h = '<details class="card week"' + (open ? ' open' : '') + '><summary><div class="eyebrow">' + esc(r.w) + '</div><p class="wk-sum">' + esc(r.sum) + '</p><span class="wk-side">' + CHEV + '</span></summary><div class="wk-body">';
+    if (r.kpi.length) h += '<div class="wk-kpis">' + r.kpi.map(function(k){ var v = k[1].match(/^(\S+)(.*)$/); return '<div class="wk-kpi"><span>' + esc(k[0]) + ' <b>' + esc(v[1]) + '</b>' + esc(v[2]) + '</span><em>' + esc(k[2]) + '</em>' + (k[3] ? '<span class="badge ' + tone(k[3]) + '">' + esc(k[3]) + '</span>' : '<span></span>') + '</div>'; }).join('') + '</div>';
+    if (r.next) h += '<p class="wk-line"><span>' + (open ? '下周' : '接着') + '</span>' + esc(r.next) + '</p>';
+    if (open && r.dec.length) h += '<div class="wk-decs">' + r.dec.map(function(d){ var on = pending[d[0]]; return '<button type="button" class="wk-dec' + (on ? '' : ' done') + '" data-wkdec="' + d[0] + '"' + (on ? '' : ' disabled') + '>' + esc(d[1]) + '<span class="st">' + (on ? '待决策 ›' : (lastPick[d[0]] ? '已定 · ' + esc(lastPick[d[0]]) : '已定')) + '</span></button>'; }).join('') + '</div>';
+    return h + '</div></details>';
+  }
+  var lastPick = {};
+  function renderWeeks(){
+    document.querySelectorAll('[data-week]').forEach(function(box){
+      var list = WEEK[box.dataset.week] || [], openNow = box.querySelector('details') ? box.querySelector('details').open : true;
+      box.innerHTML = list.map(function(r, i){ return weekHTML(r, i === 0); }).join('');
+      var first = box.querySelector('details'); if (first) first.open = openNow;
+    });
+  }
+  function goDecision(app, id){
+    showTab(app, 'progress');
+    setTimeout(function(){
+      var n = [].filter.call(app.querySelectorAll('[data-decision="' + id + '"]'), function(x){ return !x.closest('.log'); })[0] || app.querySelector('[data-decision="' + id + '"]');
+      if (!n) return; n.scrollIntoView({behavior:'smooth', block:'center'}); n.classList.remove('flash'); void n.offsetWidth; n.classList.add('flash');
+    }, 250);
+  }
 
   // ---------- tools per plan step ----------
   var TOOL_FREE = {'YouTube':'公开数据，不用授权','论文库':'公开数据，不用授权','实验室主页':'公开数据，不用授权','投资机构官网':'公开数据，不用授权','模拟引擎':'内部工具，不用授权'};
@@ -1626,9 +1707,9 @@ button.tool.off:hover{background:color-mix(in srgb, var(--amber) 14%, #fff)}
   var REF_ICON = {video:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg>',post:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 7h14M5 12h14M5 17h9"/></svg>',mail:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>',doc:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg>',link:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></svg>'}, REF_KIND = {video:'视频', post:'帖子', mail:'邮件', doc:'文档', link:'链接'};
   function refsHTML(M){
     var rs = M.refs || [];
-    return '<div class="mem-title">产出标准<span>长期有效，每个任务交付前先对一遍</span><button class="link-btn" type="button" data-ref-add>+ 加一条</button></div><div class="std-list">' +
+    return '<div class="mem-title">产出标准<span>交付前逐条核对</span><button class="link-btn" type="button" data-ref-add>+ 加一条</button></div><div class="std-list">' +
       rs.map(function(r, i){
-        return '<div class="std' + (r.bad ? ' bad' : '') + '"><span class="si" aria-hidden="true">' + (REF_ICON[r.k] || REF_ICON.link) + '</span><div><div class="st"><strong>' + esc(r.t) + '</strong><span class="src">' + (REF_KIND[r.k] || '链接') + ' · ' + esc(r.src) + '</span></div><p><b>' + (r.bad ? '别学' : '学它') + '</b>' + esc(r.l) + '</p></div><button class="rdel" type="button" data-ref-del="' + i + '" aria-label="去掉这一条">×</button></div>';
+        return '<div class="std' + (r.bad ? ' bad' : '') + '"><span class="si" aria-hidden="true">' + (REF_ICON[r.k] || REF_ICON.link) + '</span><div><div class="st"><strong>' + esc(r.t) + '</strong><span class="src">' + (REF_KIND[r.k] || '链接') + ' · ' + esc(r.src) + '</span></div><p><b>' + (r.bad ? '避免' : '参考') + '</b>' + esc(r.l) + '</p></div><button class="rdel" type="button" data-ref-del="' + i + '" aria-label="去掉这一条">×</button></div>';
       }).join('') + '</div>';
   }
   function refDel(btn){
@@ -1664,8 +1745,8 @@ button.tool.off:hover{background:color-mix(in srgb, var(--amber) 14%, #fff)}
   // ---------- canned replies per twin ----------
   var CANNED = {
     ellie: [
-      {k:'参数', a:'三组假设用的参数都有出处：创业存活率用的是公开的企业存活统计，收入恢复时间参考了劳动经济学里关于失业后再就业的研究，存款分布用的是公开的家庭调查。具体来源和链接会放在帖子首条回复。（来源为示例）'},
-      {k:'为什么', a:'按三条选题标准：人人都会想过要不要辞职；“成没成不是关键”这个结论有点反直觉；看的人很容易代入自己。它对应的付费点也最直接，就是把你自己的决定模拟一遍。'},
+      {k:'参数', a:'三组假设用的参数都有出处：失业概率用的是历次经济下行期的公开失业统计，收入恢复时间参考了劳动经济学里关于失业后再就业的研究，存款分布用的是公开的家庭调查。具体来源和链接会放在帖子首条回复。（来源为示例）'},
+      {k:'为什么', a:'按三条选题标准：经济不好时存款够不够用，几乎人人都担心过；“会不会失业不是关键”这个结论有点反直觉；看的人很容易拿自己的存款去比。它对应的付费点也最直接，就是把你自己的情况模拟一遍。'},
       {k:'第二期', a:'等第一期复盘再定。信号好，就在同一个付费点上换个话题；不好，就换付费点。选题清单里排好的几个先放着。'},
       {k:'风险', a:'最大的风险是被当成建议。所以画面和帖子都标 Simulation，不用真人名，不说“预测”，结尾只讲模拟里出现了什么，不说该怎么做。'},
       {k:'信号', a:'回复人数来得快但偏乐观，等候名单人数少但更接近付费意愿。我建议两个都看，以等候名单为主。'}
@@ -1677,7 +1758,7 @@ button.tool.off:hover{background:color-mix(in srgb, var(--amber) 14%, #fff)}
     ],
     dongqi: [
       {k:'3.4', a:'主要是随机种子不同。固定同一个种子再跑，差到 0.3%。所以这是抽样波动，不是算错。'},
-      {k:'什么时候', a:'今晚 11 点左右跑完，明早的汇报里给你。'},
+      {k:'什么时候', a:'预计今晚 23:00 完成，明早的汇报里给你。'},
       {k:'俊成', a:'有影响。俊成发现换一份存款分布数据，坏结局的比例会变很多。我们复跑用的是同一份数据，所以复跑一致只说明没算错，不说明结论稳。这一点我会写进交给 Ellie 的说明。'}
     ],
     akasha: [
@@ -1700,6 +1781,7 @@ button.tool.off:hover{background:color-mix(in srgb, var(--amber) 14%, #fff)}
     bubble(log, t, 'me'); if (say){ say.value = ''; app.querySelector('.composer').classList.remove('has-text'); }
     var key = app.dataset.key || 'ellie';
     var hit = (CANNED[key] || CANNED.ellie).filter(function(c){ return t.indexOf(c.k) > -1; })[0];
+    if (/周报|这周|本周/.test(t)){ var wk = (WEEK[key] || [])[0]; twinSays(log, wk ? '本周到现在：' + wk.sum + '。周报在右边“任务”最上面，周五 18:00 定稿后也发到这里。' : '周报每周五 18:00 写好。'); showTab(app, 'tasks'); return; }
     if (/工具|用什么/.test(t)){ twinSays(log, '可以。我把右边的计划打开成可以改的样子了，每一步下面能加、删工具。授权平台里有的直接选；还没授权的我先不用，计划里会标成“未授权”，点一下就能去授权。'); openFlowFrom(app); return; }
     if (/流程/.test(t)){ twinSays(log, '可以。我把右边的计划打开成可以改的样子了：步骤、谁来做、用什么工具、顺序都能改，改完选只改这一次，还是以后都这样。也可以直接告诉我改哪一步，比如“第 5 步先只做横版”。'); openFlowFrom(app); return; }
     twinSays(log, hit ? hit.a : '收到。我先列个计划，把预测和出结果的时间一起写给你，你确认了我再动手。');
@@ -1716,10 +1798,10 @@ button.tool.off:hover{background:color-mix(in srgb, var(--amber) 14%, #fff)}
   var CONN = {
     j_gh:  {name:'GitHub', svc:'GitHub', can:['读模型仓库的代码','开分支、提交合并请求'], no:['合并到主线（要你确认）','删除分支或仓库']},
     j_run: {name:'计算资源', svc:'云服务', can:['按已定的参数提交模拟任务','查看用量'], no:['单次超过预算（要你确认）','改动别人的任务']},
-    j_drive:{name:'云端文档', svc:'Google', can:['读参数表和实验记录'], no:['改动或分享文件']},
+    j_drive:{name:'云端文档', svc:'Google', can:['读取参数表与实验记录'], no:['改动或分享文件']},
     d_gh:  {name:'GitHub', svc:'GitHub', can:['读原模型仓库','在复跑仓库里提交'], no:['改动原模型仓库','公开仓库（要你确认）']},
     d_run: {name:'计算资源', svc:'云服务', can:['提交复跑任务','查看用量'], no:['单次超过预算（要你确认）']},
-    d_drive:{name:'云端文档', svc:'Google', can:['读 Ellie 那边的参数表和假设'], no:['改动或分享文件']},
+    d_drive:{name:'云端文档', svc:'Google', can:['读取 Ellie 的参数表与假设'], no:['改动或分享文件']},
     a_mail:{name:'邮箱', svc:'Google', can:['读“投资人”文件夹里的往来','起草跟进邮件，发之前要你确认'], no:['读和融资无关的邮件','删除任何邮件']},
     a_cal: {name:'日历', svc:'Google', can:['查看你的空档','发会议邀请'], no:['看日程的具体内容','改动别人发来的会议']},
     a_drive:{name:'云端文档', svc:'Google', can:['读你选定文件夹里的材料'], no:['改动或分享文件','读其他文件夹']},
@@ -1792,7 +1874,7 @@ button.tool.off:hover{background:color-mix(in srgb, var(--amber) 14%, #fff)}
   };
   var AREA_LEARN = {'运营':['x','wx','mail'], '融资':['mail','drive','cal'], '销售':['mail','crm','cal'], '研发':['gh','drive','lab'], '招聘':['ats','mail','li']};
   // step 3: workflow templates
-  var WHO = ['分身做','分身做，你确认','你自己做'];
+  var WHO = ['分身执行','分身执行，需确认','本人负责'];
   var FLOW = {
     '运营':{steps:[['定要验证的付费点，和看什么算验证了',2],['看市场上什么话题有流量',0],['定讲什么内容',1],['做出真结果',1],['制作并按平台适配',1],['发布后复盘',0]], check:'第 1 步定的信号，比如回复“我也想跑一遍我的”的人数、等候名单人数', from:'x'},
     '融资':{steps:[['列投资人名单',1],['准备材料',0],['第一次联系',1],['开会',2],['会后跟进',0],['到期复盘',0]], check:'回复数、约到的会、进到下一轮的数量', from:'mail'},
@@ -1891,7 +1973,7 @@ button.tool.off:hover{background:color-mix(in srgb, var(--amber) 14%, #fff)}
         '<dt>工作区</dt><dd>' + W.areas.join('、') + '</dd>' +
         '<dt>学到的</dt><dd>' + (learnedList.length ? learnedList.map(function(k){ return esc(LEARN[k].learn); }).join('<br>') : '还没读你的资料') + '</dd>' +
         W.areas.filter(function(a){ return (W.flows[a].refs || []).length; }).map(function(a){ return '<dt>' + a + '产出标准</dt><dd>' + W.flows[a].refs.map(function(r){ return esc(r.w); }).join('、') + '</dd>'; }).join('') +
-        W.areas.map(function(a){ return '<dt>' + a + '流程</dt><dd><div class="sum-flow">' + W.flows[a].steps.map(function(st){ return esc(st.t) + (st.who ? '<small style="color:var(--amber)">（' + WHO[st.who].replace('分身做，', '') + '）</small>' : ''); }).join('<i>→</i>') + '</div></dd>'; }).join('') +
+        W.areas.map(function(a){ return '<dt>' + a + '流程</dt><dd><div class="sum-flow">' + W.flows[a].steps.map(function(st){ return esc(st.t) + (st.who ? '<small style="color:var(--amber)">（' + WHO[st.who].replace('分身执行，', '') + '）</small>' : ''); }).join('<i>→</i>') + '</div></dd>'; }).join('') +
         '<dt>能替你做</dt><dd>' + (acts.length ? acts.join('、') : '还没授权，先只起草') + '</dd>' +
         '<dt>不替你做</dt><dd>' + rules.map(esc).join('；') + '</dd></dl></div>' +
         '<div class="row"><input id="nt-try" placeholder="哪里不对，告诉它"><button class="btn" type="button" id="nt-try-send">发送</button></div></div>';
@@ -1975,10 +2057,10 @@ button.tool.off:hover{background:color-mix(in srgb, var(--amber) 14%, #fff)}
   function S(h, li){ return {h:h, li:li}; }
   var MEM = {
     ellie: {name:'Ellie', orb:'',
-      refs:[{k:'video', t:'「100 万次人生模拟」', src:'你发的样板', l:'一个人人会遇到的问题，重跑很多次，落到一个反直觉的结论'},
-        {k:'post', t:'结论在正文，来源在首条回复', src:'X · 示例', l:'正文只讲结论，假设和数据来源放首条回复'},
-        {k:'video', t:'把模拟讲成建议的视频', src:'示例', l:'结尾一句“所以你应该辞职”，还用了真人名', bad:1}], updated:'2 天前更新 · 来自 X、公众号、邮箱', edits:41,
-      story:'我是从你的 312 条 X 帖子、18 篇公众号文章和团队的选题记录开始认识你的。你负责运营，每期内容都是为了验证一个付费点，所以你先问的不是会不会火，而是发完看什么算验证了。选题你看三条：人人都会遇到的人生大问题、结论反直觉、观众能代入自己。视频里的数你要求必须真跑出来，参数有出处，只讲换了假设也不变的结论。标 Simulation、不给建议、不用真人名、不说“预测”，这几条你从不松口，碰到边上的事我都会先问你。',
+      refs:[{k:'video', t:'「100 万次人生模拟」', src:'你发的样板', l:'普遍问题，大量重跑，得出反直觉结论'},
+        {k:'post', t:'结论在正文，来源在首条回复', src:'X · 示例', l:'正文只写结论，假设与来源放首条回复'},
+        {k:'video', t:'把模拟讲成建议', src:'示例', l:'结尾给出建议，并使用真人名', bad:1}], updated:'2 天前更新 · 来自 X、公众号、邮箱', edits:41,
+      story:'基于 312 条 X 帖子、18 篇公众号文章与团队选题记录。Ellie 负责运营，每期内容用于验证一个付费点，先定验证信号，再谈传播。选题看三点：普遍问题、结论反直觉、观众可代入；数据须真实跑出、参数有出处，只讲稳健结论。标注 Simulation、不给建议、不用真人名、不说「预测」，涉及边界的事项先请示。',
       folders:[
         {k:'habit', t:'工作习惯', notes:[
           {t:'发帖节奏', up:'2 天前', secs:[
@@ -1993,7 +2075,7 @@ button.tool.off:hover{background:color-mix(in srgb, var(--amber) 14%, #fff)}
             S('怎么排', [['话题和付费点交叉，排出选题清单','选题记录'],['一期只验证一个付费点','选题记录']]),
             S('不选的', [['只对少数人有用的话题',''],['结论和常识一样的','']])]}
         ]},
-        {k:'voice', t:'说话方式', notes:[
+        {k:'voice', t:'表达风格', notes:[
           {t:'写法', up:'2 天前', secs:[
             S('句子', [['短句，一句话只讲一件事',''],['先给结论，再给依据','']]),
             S('用词', [['不用“颠覆”“革命”“重新定义”','你改过 6 次'],['英文偏口语，不用感叹号','X'],['数字写具体：写“7 个人回复”，不写“反响热烈”','你改过 3 次'],['不说“预测”，说“模拟结果”','运营流程的边界']]),
@@ -2001,24 +2083,24 @@ button.tool.off:hover{background:color-mix(in srgb, var(--amber) 14%, #fff)}
         ]},
         {k:'flow', t:'工作流程', notes:[
           {t:'运营流程', up:'新建分身时设定', secs:[
-            S('1. 定要验证的付费点和信号 · 你自己做', [['付费点有五个，一期只验证一个',''],['第一期「辞职创业」对应「模拟自身决策」',''],['看什么算验证了，发布前就要定：比如回复“我也想跑一遍我的”的人数，或点进等候名单的人数','第一期还没定']]),
-            S('2. 看什么话题有流量 · 分身做', [['找同类里已经跑出来的样板，提炼共性','参考「100 万次人生模拟」'],['得出三条选题标准：人人都会遇到的人生大问题、结论反直觉、观众能代入自己','']]),
-            S('3. 定讲什么 · 分身做，你确认', [['话题和付费点交叉，排出选题清单',''],['固定一种形式：现在是「模拟结果」，系列叫「同一个人，重来一万次」','']]),
-            S('4. 做出真结果 · 分身做，你确认', [['视频里的数必须是真跑出来的',''],['参数有出处，假设标明，只讲换了假设也不变的结论',''],['边界：标 Simulation、不给建议、不用真人名、不说“预测”','']]),
-            S('5. 制作并按平台适配 · 分身做，你确认', [['X 用横版加配音字幕，竖版留给短视频平台',''],['配一条帖子，首条回复放假设和来源','']]),
-            S('6. 发布后复盘 · 分身做', [['对照第 1 步定的信号看结果',''],['决定这个付费点继续做、换话题，还是换付费点',''],['有效的形式沉淀成系列','']])]}
+            S('1. 定要验证的付费点和信号 · 本人负责', [['付费点有五个，一期只验证一个',''],['第一期对应「模拟自身决策」',''],['看什么算验证了，发布前就要定：比如回复“我也想跑一遍我的”的人数，或点进等候名单的人数','第一期还没定']]),
+            S('2. 看什么话题有流量 · 分身执行', [['找同类里已经跑出来的样板，提炼共性','参考「100 万次人生模拟」'],['得出三条选题标准：人人都会遇到的人生大问题、结论反直觉、观众能代入自己','']]),
+            S('3. 定讲什么 · 分身执行，需确认', [['话题和付费点交叉，排出选题清单',''],['固定一种形式：现在是「模拟结果」，系列叫「同一个人，重来一万次」','']]),
+            S('4. 做出真结果 · 分身执行，需确认', [['视频里的数必须是真跑出来的',''],['参数有出处，假设标明，只讲换了假设也不变的结论',''],['边界：标 Simulation、不给建议、不用真人名、不说“预测”','']]),
+            S('5. 制作并按平台适配 · 分身执行，需确认', [['X 用横版加配音字幕，竖版留给短视频平台',''],['配一条帖子，首条回复放假设和来源','']]),
+            S('6. 发布后复盘 · 分身执行', [['对照第 1 步定的信号看结果',''],['决定这个付费点继续做、换话题，还是换付费点',''],['有效的形式沉淀成系列','']])]}
         ]},
-        {k:'people', t:'重要的人', notes:[
+        {k:'people', t:'关键联系人', notes:[
           {t:'这期给谁看', up:'上周', secs:[
-            S('主要观众', [['正在想要不要辞职的上班族','选题记录'],['想创业但还没动手的人','选题记录']]),
-            S('不针对', [['已经在创业的人','他们要的是经营建议，不在这期范围']])]},
+            S('主要观众', [['担心经济下行、想知道存款够不够用的上班族','选题记录'],['刚开始攒钱、不知道该留多少应急钱的年轻人','选题记录']]),
+            S('不针对', [['想要具体理财、投资建议的人','这期只讲模拟结果，不给建议']])]},
           {t:'帮忙核数的人', up:'3 天前', secs:[
             S('看参数', [['合作教授，看模型参数和假设是否站得住','示例']]),
             S('复跑', [['数据同事，用同样的参数再跑一遍，确认结果一致','示例']])]}
         ]},
-        {k:'never', t:'不替你做', notes:[
+        {k:'never', t:'权限边界', notes:[
           {t:'边界', up:'新建分身时设定', secs:[
-            S('一律转给你', [['任何对外承诺：合作、时间表','新建时勾选'],['观众问“我该不该辞职”这类个人建议','不给建议']]),
+            S('一律转给你', [['任何对外承诺：合作、时间表','新建时勾选'],['观众问“我该怎么存钱、怎么理财”这类个人建议','不给建议']]),
             S('要你确认', [['发视频和帖子',''],['视频里讲哪几条结论',''],['写视频脚本','命中率还差 2 次']]),
             S('可以自己做', [['回复普通评论','最近 10 次中 9 次，已放权'],['数回复和等候名单人数','']]),
             S('始终如此', [['画面和帖子都标 Simulation',''],['不用真人名，不说“预测”',''],['对外说明是分身，不假装是你',''],['不在别人的平台上自动操作','']])]}
@@ -2034,10 +2116,10 @@ button.tool.off:hover{background:color-mix(in srgb, var(--amber) 14%, #fff)}
         ]}
       ]},
     junc: {name:'俊成', orb:'g', updated:'昨天更新 · 来自 GitHub、实验记录、参数表', edits:12,
-      refs:[{k:'doc', t:'上一版基线测试的实验记录', src:'云端文档', l:'第一行写预期，最后一段写预期和实际差在哪'},
-        {k:'doc', t:'带出处的参数表', src:'云端文档', l:'每个参数一行：取值、出处、为什么用这个'},
-        {k:'doc', t:'只放一张好看结果图的周报', src:'示例', l:'没写跑了几次、换没换参数，看不出稳不稳', bad:1}],
-      story:'我是从你在模型仓库里的 420 次提交、86 份实验记录和参数表开始认识你的。你做实验一定先写预期再动手，跑完拿预期和实际对一遍，差在哪写清楚。你不信单次结果：同一个设置至少换两组参数、固定随机种子，能复现才算。改模型代码你要亲自看过才合并，对外公开任何结果都要你先点头。',
+      refs:[{k:'doc', t:'上一版基线测试的实验记录', src:'云端文档', l:'首行写预期，末段对照预期与实际'},
+        {k:'doc', t:'带出处的参数表', src:'云端文档', l:'每个参数注明取值、出处与理由'},
+        {k:'doc', t:'只放结果图的周报', src:'示例', l:'未说明运行次数与参数变化，无法判断稳健性', bad:1}],
+      story:'基于 420 次代码提交、86 份实验记录与参数表。俊成先写预期再实验，结束后对照预期说明差异；单次结果不作数，至少换两组参数并固定随机种子，可复现才成立。模型代码合并与对外公开结果均需本人确认。',
       folders:[
         {k:'habit', t:'工作习惯', notes:[
           {t:'做实验', up:'昨天', secs:[
@@ -2045,25 +2127,25 @@ button.tool.off:hover{background:color-mix(in srgb, var(--amber) 14%, #fff)}
             S('跑法', [['固定随机种子，保证能复现','GitHub'],['同一个设置至少换两组参数','实验记录']]),
             S('记录', [['每组写清参数、出处、跑了多少次','参数表']])]}
         ]},
-        {k:'voice', t:'说话方式', notes:[
+        {k:'voice', t:'表达风格', notes:[
           {t:'写法', up:'3 天前', secs:[
             S('句子', [['先给结论和数，再讲原因','']]),
             S('分寸', [['说清哪些还没验证，不把没验证的说成结论','你改过 4 次']])]}
         ]},
         {k:'flow', t:'工作流程', notes:[
           {t:'研发流程', up:'新建分身时设定', secs:[
-            S('1. 写清要验证什么，先写预期 · 你自己做', [['每个实验开始前写下预期结果和“怎么算对”',''],['预期写在实验记录第一行，跑完不改','']]),
-            S('2. 查资料、搭实验 · 分身做', [['每个参数写清取值和出处','参数表']]),
-            S('3. 跑实验 · 分身做', [['固定随机种子，保证能复现',''],['同一个设置至少换两组参数','']]),
-            S('4. 看结果、决定下一步 · 你自己做', [['对不上的先定：查原因，还是排除并标明','']]),
-            S('5. 复盘：预期和实际差多少 · 分身做', [['对照第一行的预期，写清哪组为什么不一致',''],['结论同步给要用它的分身','']])]}
+            S('1. 写清要验证什么，先写预期 · 本人负责', [['每个实验开始前写下预期结果和“怎么算对”',''],['预期写在实验记录第一行，跑完不改','']]),
+            S('2. 查资料、搭实验 · 分身执行', [['每个参数写清取值和出处','参数表']]),
+            S('3. 跑实验 · 分身执行', [['固定随机种子，保证能复现',''],['同一个设置至少换两组参数','']]),
+            S('4. 看结果、决定下一步 · 本人负责', [['对不上的先定：查原因，还是排除并标明','']]),
+            S('5. 复盘：预期和实际差多少 · 分身执行', [['对照第一行的预期，写清哪组为什么不一致',''],['结论同步给要用它的分身','']])]}
         ]},
-        {k:'people', t:'重要的人', notes:[
+        {k:'people', t:'关键联系人', notes:[
           {t:'一起干活的人', up:'昨天', secs:[
             S('研发', [['东奇 · 负责复跑和核对','另一个研发分身']]),
             S('要用结果的人', [['Ellie · 运营，第一期视频要用模拟结论',''],['Akasha · 融资，投资人会问模拟怎么验证','']])]}
         ]},
-        {k:'never', t:'不替你做', notes:[
+        {k:'never', t:'权限边界', notes:[
           {t:'边界', up:'新建分身时设定', secs:[
             S('一律转给你', [['对外公开任何结果、代码','新建时勾选']]),
             S('要你确认', [['合并模型代码','命中率还差 4 次'],['单次用量超过预算的实验','']]),
@@ -2079,10 +2161,10 @@ button.tool.off:hover{background:color-mix(in srgb, var(--amber) 14%, #fff)}
         ]}
       ]},
     dongqi: {name:'东奇', orb:'p2', updated:'今天更新 · 来自复跑记录、代码评审、参数表', edits:9,
-      refs:[{k:'doc', t:'上一次复跑基线的说明', src:'云端文档', l:'一页纸：每个数差几个百分点、为什么差'},
-        {k:'doc', t:'复跑环境说明', src:'GitHub', l:'写清和原代码哪里不一样、为什么'},
-        {k:'doc', t:'只写“已复现”的结论', src:'示例', l:'没写差多少，别人没法判断', bad:1}],
-      story:'我是从你过去 38 次复跑记录和 120 条代码评审意见开始认识你的。你复跑从不共用原来的代码，按参数表自己重新搭一遍，这样才查得出原来的错。你看的是“差多少”：每个数都写清和原结果差几个百分点、为什么差。复跑一致你也不说“结论没问题”，只说“没算错”，稳不稳是另一件事。公开参数和脚本你一直自己定。',
+      refs:[{k:'doc', t:'上一次复跑基线的说明', src:'云端文档', l:'一页说明每项差异及原因'},
+        {k:'doc', t:'复跑环境说明', src:'GitHub', l:'说明与原代码的差异及原因'},
+        {k:'doc', t:'只写“已复现”的结论', src:'示例', l:'未给出差异数值，无法判断', bad:1}],
+      story:'基于 38 次复跑记录与 120 条代码评审。东奇复跑不复用原代码，按参数表独立搭建，以发现原有错误；每个数值注明与原结果的差异及原因。复跑一致只说明计算无误，不代表结论稳健。参数与脚本是否公开由本人决定。',
       folders:[
         {k:'habit', t:'工作习惯', notes:[
           {t:'复跑', up:'今天', secs:[
@@ -2090,25 +2172,25 @@ button.tool.off:hover{background:color-mix(in srgb, var(--amber) 14%, #fff)}
             S('比对', [['每个数写清差几个百分点','复跑记录'],['差在 ±5% 以内算一致','你定的规矩']]),
             S('交付', [['交出去前写一页说明：哪些一致、差多少、为什么','']])]}
         ]},
-        {k:'voice', t:'说话方式', notes:[
+        {k:'voice', t:'表达风格', notes:[
           {t:'写法', up:'2 天前', secs:[
             S('分寸', [['“没算错”和“结论稳”分开说','你改过 5 次']]),
             S('数字', [['百分比保留一位小数','']])]}
         ]},
         {k:'flow', t:'工作流程', notes:[
           {t:'研发流程', up:'新建分身时设定', secs:[
-            S('1. 写清要验证什么，先写预期 · 你自己做', [['写下预期：哪几组应该一致，最没把握的是哪一处','']]),
-            S('2. 查资料、搭实验 · 分身做', [['拿原来的参数表和假设，独立搭一套环境',''],['不共用原来的代码，这样才查得出原来的错','你定的规矩']]),
-            S('3. 跑实验 · 分身做', [['和原结果逐条比，每个数写清差几个百分点','']]),
-            S('4. 看结果、决定下一步 · 你自己做', [['差在 ±5% 以内算一致',''],['公开参数和脚本一直要你定','发出去收不回']]),
-            S('5. 复盘：预期和实际差多少 · 分身做', [['交出去前写一页说明：哪些一致、差多少、为什么',''],['“没算错”和“结论稳”分开写','']])]}
+            S('1. 写清要验证什么，先写预期 · 本人负责', [['写下预期：哪几组应该一致，最没把握的是哪一处','']]),
+            S('2. 查资料、搭实验 · 分身执行', [['拿原来的参数表和假设，独立搭一套环境',''],['不共用原来的代码，这样才查得出原来的错','你定的规矩']]),
+            S('3. 跑实验 · 分身执行', [['和原结果逐条比，每个数写清差几个百分点','']]),
+            S('4. 看结果、决定下一步 · 本人负责', [['差在 ±5% 以内算一致',''],['公开参数和脚本一直要你定','发出去收不回']]),
+            S('5. 复盘：预期和实际差多少 · 分身执行', [['交出去前写一页说明：哪些一致、差多少、为什么',''],['“没算错”和“结论稳”分开写','']])]}
         ]},
-        {k:'people', t:'重要的人', notes:[
+        {k:'people', t:'关键联系人', notes:[
           {t:'一起干活的人', up:'今天', secs:[
             S('研发', [['俊成 · 负责模型和换参数测试','另一个研发分身']]),
             S('要用结果的人', [['Ellie · 第一期视频，复跑一致才交给她','']])]}
         ]},
-        {k:'never', t:'不替你做', notes:[
+        {k:'never', t:'权限边界', notes:[
           {t:'边界', up:'新建分身时设定', secs:[
             S('一律转给你', [['公开参数表和复跑脚本','发出去收不回']]),
             S('要你确认', [['写给别的分身的复跑说明','命中率还差 3 次'],['单次用量超过预算的复跑','']]),
@@ -2124,10 +2206,10 @@ button.tool.off:hover{background:color-mix(in srgb, var(--amber) 14%, #fff)}
         ]}
       ]},
     akasha: {name:'Akasha', orb:'b',
-      refs:[{k:'mail', t:'上一轮进了尽调的那封跟进邮件', src:'示例', l:'先给数据，附件只放会上答应的，结尾约好下一步'},
-        {k:'doc', t:'一页纸 第 6 版', src:'云端文档', l:'一页讲清在做什么、凭什么能做成'},
-        {k:'mail', t:'群发的投资人月报', src:'示例', l:'每个人收到的都一样，没回应对方上次问的问题', bad:1}], updated:'今天更新 · 来自邮箱、日历、云端文档', edits:17,
-      story:'我是从你邮箱“投资人”文件夹里的 214 封往来、日历上 63 场投资人会议和 6 版 BP 开始认识你的。这轮融资你看重的不是见了多少人，而是有多少人进到第二次会。开会前你一定要一页简报：这位投资人投过什么、上次问了什么、这次最可能卡在哪。你写邮件很短，先给数据再提请求。估值、条款和任何承诺你从不让别人代答，碰到这些我都转给你。',
+      refs:[{k:'mail', t:'进入尽调的跟进邮件', src:'示例', l:'先给数据，附件仅含会上承诺内容，结尾约定下一步'},
+        {k:'doc', t:'一页纸 第 6 版', src:'云端文档', l:'一页说明业务与可行性依据'},
+        {k:'mail', t:'群发的投资人月报', src:'示例', l:'内容统一，未回应对方此前提问', bad:1}], updated:'今天更新 · 来自邮箱、日历、云端文档', edits:17,
+      story:'基于「投资人」文件夹 214 封往来、63 场投资人会议与 6 版 BP。本轮融资以进入第二次会的人数为准，而非见面数量。会前需一页简报：投资记录、上次提问、可能卡点。邮件简短，先给数据再提请求。估值、条款与承诺一律由本人回复。',
       folders:[
         {k:'habit', t:'工作习惯', notes:[
           {t:'约投资人', up:'今天', secs:[
@@ -2138,21 +2220,21 @@ button.tool.off:hover{background:color-mix(in srgb, var(--amber) 14%, #fff)}
             S('BP', [['改过 6 版，每版都先改市场规模那页','云端文档']]),
             S('按人调', [['给专看 AI for Science 的基金，多放模拟结果和验证方式','云端文档'],['给家办，多讲团队和长期打算','']])]}
         ]},
-        {k:'voice', t:'说话方式', notes:[
+        {k:'voice', t:'表达风格', notes:[
           {t:'写法', up:'今天', secs:[
             S('句子', [['先给数据，再提请求',''],['一封邮件只说一件事','']]),
             S('用词', [['不写“颠覆”“独角兽”','你改过 5 次'],['结尾写明是分身：I\'m Akasha\'s AI assistant','始终如此']])]}
         ]},
         {k:'flow', t:'工作流程', notes:[
           {t:'融资流程', up:'新建分身时设定', secs:[
-            S('1. 列投资人名单 · 分身做，你确认', [['每位写清投过什么、为什么可能投我们',''],['你挑出这一轮的重点','']]),
-            S('2. 准备材料 · 分身做', [['BP、一页纸、模拟结果样例',''],['按每位投资人关心的点各调一版','']]),
-            S('3. 第一次联系 · 分身做，你确认', [['写给新投资人的信一直要你确认','']]),
-            S('4. 开会 · 你自己做', [['分身会前写一页简报',''],['重要的会先拿模拟的投资人练一遍，只在内部用','']]),
-            S('5. 会后跟进 · 分身做，你确认', [['24 小时内发跟进邮件、补材料',''],['估值和条款一律转给你','']]),
-            S('6. 到期复盘 · 分身做', [['看约到几位第二次会，和预计比',''],['哪类投资人推进快，下一批多放','']])]}
+            S('1. 列投资人名单 · 分身执行，需确认', [['每位写清投过什么、为什么可能投我们',''],['你挑出这一轮的重点','']]),
+            S('2. 准备材料 · 分身执行', [['BP、一页纸、模拟结果样例',''],['按每位投资人关心的点各调一版','']]),
+            S('3. 第一次联系 · 分身执行，需确认', [['写给新投资人的信一直要你确认','']]),
+            S('4. 开会 · 本人负责', [['分身会前写一页简报',''],['重要的会先拿模拟的投资人练一遍，只在内部用','']]),
+            S('5. 会后跟进 · 分身执行，需确认', [['24 小时内发跟进邮件、补材料',''],['估值和条款一律转给你','']]),
+            S('6. 到期复盘 · 分身执行', [['看约到几位第二次会，和预计比',''],['哪类投资人推进快，下一批多放','']])]}
         ]},
-        {k:'people', t:'重要的人', notes:[
+        {k:'people', t:'关键联系人', notes:[
           {t:'本轮名单 12 位', up:'今天', secs:[
             S('进了第二次会', [['Priya Nair · Meridian Ventures','下周二带合伙人'],['Rahul Mehta · Fieldstone Ventures',''],['Jess Lin · Northlake Capital','']]),
             S('开过第一次会', [['还有 4 位','示例']]),
@@ -2162,7 +2244,7 @@ button.tool.off:hover{background:color-mix(in srgb, var(--amber) 14%, #fff)}
             S('她关心什么', [['模拟结果怎么验证','第一次会'],['团队里谁懂生物','第一次会']]),
             S('往来', [['11-05 第一次会，30 分钟','日历'],['下周二第二次会，带合伙人','日历']])]}
         ]},
-        {k:'never', t:'不替你做', notes:[
+        {k:'never', t:'权限边界', notes:[
           {t:'边界', up:'新建分身时设定', secs:[
             S('一律转给你', [['估值、条款、金额','新建时勾选'],['任何承诺：时间表、合作','新建时勾选']]),
             S('要你确认', [['第一次联系某位投资人',''],['会后跟进邮件','命中率还差 2 次']]),
@@ -2179,10 +2261,10 @@ button.tool.off:hover{background:color-mix(in srgb, var(--amber) 14%, #fff)}
         ]}
       ]},
     lance: {name:'Lance', orb:'o',
-      refs:[{k:'mail', t:'给 Weiss 实验室的上一封信', src:'导师回了，推荐 2 人（示例）', l:'不到 120 词，先说在做什么再提请求，写明是分身'},
-        {k:'doc', t:'数据工程师那次的画像', src:'上一个岗位 · 招到了', l:'三条标准都能判断对错，不写“优秀”“有热情”'},
-        {k:'mail', t:'写给开源作者的冷邮件', src:'15 封只回 2 封', l:'一上来就介绍公司，读着像推销', bad:1}], updated:'昨天更新 · 来自招聘系统、邮箱、LinkedIn 导出', edits:22,
-      story:'我是从你过去 37 条招聘记录认识你的。你招人的方式很固定：先把要什么样的人定清楚，再去找这类人里最顶尖的那一群。你更相信引荐，入职的 5 个人里有 4 个来自导师或前同事。你写信很短，写给导师的不超过 120 词，先说清在做什么，再提请求。薪资和职位你不让别人谈，写给导师的信也一定要你看过。',
+      refs:[{k:'mail', t:'致 Weiss 实验室的上一封信', src:'导师回了，推荐 2 人（示例）', l:'120 词以内，先说明工作再提请求，注明由分身撰写'},
+        {k:'doc', t:'数据工程师岗位画像', src:'上一个岗位 · 招到了', l:'三条标准均可客观判断，不用空泛形容词'},
+        {k:'mail', t:'写给开源作者的冷邮件', src:'15 封只回 2 封', l:'开头即介绍公司，读来像推销', bad:1}], updated:'昨天更新 · 来自招聘系统、邮箱、LinkedIn 导出', edits:22,
+      story:'基于 37 条招聘记录。Lance 先定清画像，再寻找其中最顶尖的人群；偏重引荐，已入职 5 人中 4 人来自导师或前同事。信件简短，致导师不超过 120 词，先说明在做什么再提请求。薪资与职位由本人沟通，导师信件均需本人审阅。',
       folders:[
         {k:'habit', t:'工作习惯', notes:[
           {t:'怎么找人', up:'昨天', secs:[
@@ -2193,20 +2275,20 @@ button.tool.off:hover{background:color-mix(in srgb, var(--amber) 14%, #fff)}
             S('第一轮', [['一上来就问实验细节，不聊简历','面试反馈 · 15 份'],['30 分钟，你亲自聊','日历']]),
             S('判断标准', [['能讲清一次失败的实验和原因','面试反馈'],['自己动手做过，不只是指导别人','面试反馈']])]}
         ]},
-        {k:'voice', t:'说话方式', notes:[
+        {k:'voice', t:'表达风格', notes:[
           {t:'写信', up:'昨天', secs:[
             S('写给候选人', [['80 词以内','LinkedIn 导出'],['第一句说对方哪篇论文或哪个项目打动你','LinkedIn 导出'],['不提薪资，不说“机会难得”','你改过 5 次']]),
             S('写给导师', [['不超过 120 词','你改过 22 封'],['先说清我们在做什么，再提请求',''],['只请推荐，不让导师替学生表态','']])]}
         ]},
         {k:'flow', t:'工作流程', notes:[
           {t:'招聘流程', up:'新建分身时设定', secs:[
-            S('1. 定画像 · 你自己做', [['要什么样的人、怎么算顶尖、不要谁',''],['后面找谁、算不算命中，都按画像判断','']]),
-            S('2. 找最顶尖的那群人 · 分身做，你确认', [['分身列出几群人，每群写清人数、来源和预计回复数',''],['你选先找哪群',''],['选定后建名单，每个人写清为什么匹配、怎么联系得上','论文库、GitHub、实验室主页']]),
-            S('3. 触达 · 分身做，你确认', [['先写信请导师推荐，直接写信为辅','入职的 5 人里 4 人来自引荐'],['写给导师的信一直要你确认',''],['写给候选人的，命中率达标后可以放手','还差 3 次']]),
-            S('4. 约聊、面试 · 你自己做', [['分身看你日历空档发邀请、准备材料',''],['面试和发 offer 你来，分身只整理面试反馈','']]),
-            S('5. 到期复盘 · 分身做', [['看：每群人的回复数、约聊数、进面试的数量',''],['下一批往命中率高的人群多放','']])]}
+            S('1. 定画像 · 本人负责', [['要什么样的人、怎么算顶尖、不要谁',''],['后面找谁、算不算命中，都按画像判断','']]),
+            S('2. 找最顶尖的那群人 · 分身执行，需确认', [['分身列出几群人，每群写清人数、来源和预计回复数',''],['你选先找哪群',''],['选定后建名单，每个人写清为什么匹配、怎么联系得上','论文库、GitHub、实验室主页']]),
+            S('3. 触达 · 分身执行，需确认', [['以导师推荐为主，直接联系为辅','入职的 5 人里 4 人来自引荐'],['写给导师的信一直要你确认',''],['写给候选人的，命中率达标后可以放手','还差 3 次']]),
+            S('4. 约聊、面试 · 本人负责', [['分身看你日历空档发邀请、准备材料',''],['面试和发 offer 你来，分身只整理面试反馈','']]),
+            S('5. 到期复盘 · 分身执行', [['看：每群人的回复数、约聊数、进面试的数量',''],['下一批往命中率高的人群多放','']])]}
         ]},
-        {k:'people', t:'重要的人', notes:[
+        {k:'people', t:'关键联系人', notes:[
           {t:'导师 6 位', up:'今天', secs:[
             S('回了信', [['Prof. Hannah Weiss','推荐了 2 个学生 · 示例'],['Prof. David Okafor','推荐了 1 个学生 · 示例']]),
             S('还没回', [['还有 2 位','上周三寄出'],['另有 2 位婉拒','']])]},
@@ -2214,7 +2296,7 @@ button.tool.off:hover{background:color-mix(in srgb, var(--amber) 14%, #fff)}
             S('本周', [['Maya R. · Weiss 实验室博士后','周四 · 示例'],['Tom L. · Okafor 实验室博士生','周五 · 示例']]),
             S('下周', [['Ivan P. · 开源工具作者','周一 · 示例']])]}
         ]},
-        {k:'never', t:'不替你做', notes:[
+        {k:'never', t:'权限边界', notes:[
           {t:'边界', up:'新建分身时设定', secs:[
             S('一律转给你', [['薪资、职位、入职时间','新建时勾选'],['候选人问到公司融资情况','']]),
             S('要你确认', [['写给导师的信','始终如此'],['第一次联系候选人','命中率还差 3 次']]),
@@ -2238,8 +2320,8 @@ button.tool.off:hover{background:color-mix(in srgb, var(--amber) 14%, #fff)}
   function preview(n){ var d = document.createElement('div'); d.innerHTML = noteHTML(n); d.querySelectorAll('.s').forEach(function(x){ x.remove(); }); return d.textContent.replace(/\s+/g, ' ').trim(); }
   function renderMem(box){
     var M = MEM[box.dataset.mem]; if (!M) return; memView(box, false);
-    box.innerHTML = '<article class="card know" data-mnote="__story" tabindex="0"><div class="who"><span class="orb' + (M.orb ? ' ' + M.orb : '') + '"><i></i></span><div><h3>我对 ' + M.name + ' 的了解</h3><div class="meta">' + M.updated + '</div></div></div><hr><p class="story">' + (M.storyHTML || M.story) + '</p><p class="foot">点开可以改。哪里不对，也可以直接在左边告诉我。</p></article>' +
-      '<div class="mem-title">全部记忆<span>新建分身时配置的，加上后来学到的</span></div><div class="mem-grid">' +
+    box.innerHTML = '<article class="card know" data-mnote="__story" tabindex="0"><div class="who"><span class="orb' + (M.orb ? ' ' + M.orb : '') + '"><i></i></span><div><h3>' + (/^[A-Za-z]/.test(M.name) ? '关于 ' : '关于') + M.name + '</h3><div class="meta">' + M.updated + '</div></div></div><hr><p class="story">' + (M.storyHTML || M.story) + '</p><p class="foot">可直接编辑，或在左侧对话中更正。</p></article>' +
+      '<div class="mem-title">全部记忆<span>初始配置与持续学习</span></div><div class="mem-grid">' +
       M.folders.map(function(f){ return '<button class="folder" type="button" data-mfolder="' + f.k + '"><span class="fi" aria-hidden="true"></span><strong>' + f.t + '</strong><span>' + f.notes.length + ' 篇</span></button>'; }).join('') + '</div>' + refsHTML(M);
   }
   function renderFolder(box, fk){
@@ -2249,7 +2331,7 @@ button.tool.off:hover{background:color-mix(in srgb, var(--amber) 14%, #fff)}
   }
   function renderNote(box, ref){
     var M = MEM[box.dataset.mem], title, body, foot, upLabel, backTo;
-    if (ref === '__story'){ title = (/^[A-Za-z]/.test(M.name) ? '我对 ' + M.name + ' 的了解' : '我对' + M.name + '的了解'); body = '<p>' + (M.storyHTML || M.story) + '</p>'; upLabel = M.updated; backTo = 'top'; }
+    if (ref === '__story'){ title = (/^[A-Za-z]/.test(M.name) ? '关于 ' : '关于') + M.name; body = '<p>' + (M.storyHTML || M.story) + '</p>'; upLabel = M.updated; backTo = 'top'; }
     else { var pr = ref.split(':'), f = M.folders.filter(function(x){ return x.k === pr[0]; })[0], n = f.notes[+pr[1]]; title = n.t; body = noteHTML(n); upLabel = (n.edited ? '刚刚被你改过' : n.up + '更新') + ' · ' + f.t; backTo = pr[0]; }
     memView(box, true);
     box.innerHTML = '<div class="mhead"><button class="round" type="button" data-mback="' + backTo + '" aria-label="返回">' + back + '</button><h2>' + title + '</h2><button class="round" type="button" data-medit="' + ref + '" aria-label="修改">' + pen + '</button></div>' +
@@ -2279,6 +2361,7 @@ button.tool.off:hover{background:color-mix(in srgb, var(--amber) 14%, #fff)}
   // ---------- one click handler ----------
   document.addEventListener('click', function(e){
     var fe = e.target.closest('[data-flow-edit]'); if (fe){ flowOpen(fe); return; }
+    var wd = e.target.closest('[data-wkdec]'); if (wd){ if (!wd.disabled) goDecision(wd.closest('.app'), wd.dataset.wkdec); return; }
     var tl = e.target.closest('button.tool.off[data-tool]'); if (tl){ goAuth(tl.closest('.app'), tl.dataset.tool); return; }
     var ra = e.target.closest('[data-ref-add]'); if (ra){ refOpen(ra); return; }
     var rd = e.target.closest('[data-ref-del]'); if (rd){ refDel(rd); return; }
@@ -2324,6 +2407,7 @@ button.tool.off:hover{background:color-mix(in srgb, var(--amber) 14%, #fff)}
   }
   ['new-twin','new-twin-2'].forEach(function(id){ var b = document.getElementById(id); if (b) b.addEventListener('click', function(){ location.hash = 'new'; }); });
   renderTools();
+  renderWeeks();
   window.addEventListener('hashchange', route);
   route();
 })();
