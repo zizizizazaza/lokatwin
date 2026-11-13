@@ -380,6 +380,24 @@ button:focus-visible, textarea:focus-visible{outline:2px solid var(--blue); outl
 .steps li.now .sn::after{content:""; position:absolute; inset:0; border-radius:50%; border:2px solid transparent; border-top-color:var(--blue); border-right-color:var(--blue); animation:spin 1s linear infinite}
 .steps li.now .sh .badge::before{content:""; display:inline-block; width:6px; height:6px; border-radius:50%; background:currentColor; margin-right:6px; vertical-align:1px; animation:blink 1.2s ease-in-out infinite}
 .segs i.now{background:linear-gradient(90deg, var(--blue) 0%, #9fd2f7 50%, var(--blue) 100%); background-size:200% 100%; animation:flow 1.4s linear infinite}
+/* tools per plan step */
+.steps .tools{display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin-top:8px}
+.steps .tools .tl{font-size:12px; color:var(--ink-3); margin-right:2px}
+.tool{display:inline-flex; align-items:center; gap:5px; font:inherit; font-size:12px; line-height:1; padding:5px 9px; border-radius:999px; background:#fff; color:var(--ink-2); border:1px solid var(--line)}
+.tool i{font-style:normal; color:var(--ink-3)}
+button.tool.off{color:var(--amber); border:1px dashed color-mix(in srgb, var(--amber) 70%, transparent); background:color-mix(in srgb, var(--amber) 7%, #fff); cursor:pointer}
+button.tool.off i{color:inherit}
+button.tool.off:hover{background:color-mix(in srgb, var(--amber) 14%, #fff)}
+.fstep .ftools{grid-column:2 / -1; display:flex; flex-wrap:wrap; align-items:center; gap:6px; padding:0 0 2px 8px}
+.fstep .ftools .tl{font-size:12px; color:var(--ink-3)}
+.fstep .ftools .tool{padding:4px 4px 4px 9px}
+.fstep .ftools .tool button{width:18px; height:18px; border-radius:50%; color:var(--ink-3); font-size:13px; line-height:1}
+.fstep .ftools .tool button:hover{color:var(--coral); background:var(--sub)}
+.fstep .ftools select{font-size:12px; padding:4px 8px; border-radius:999px; color:var(--blue)}
+.fstep .ftools input{width:120px; flex:none; font-size:12px; padding:4px 8px; border:1px solid var(--blue); background:#fff; border-radius:999px}
+.sub.flash{animation:rowflash 1.6s ease-out}
+@keyframes rowflash{0%,40%{box-shadow:0 0 0 2px var(--amber)}100%{box-shadow:0 0 0 0 transparent}}
+@media (prefers-reduced-motion: reduce){ .sub.flash{animation:none; box-shadow:0 0 0 2px var(--amber)} }
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes blink{50%{opacity:.25}}
 @keyframes flow{from{background-position:100% 0}to{background-position:-100% 0}}
@@ -780,12 +798,12 @@ button:focus-visible, textarea:focus-visible{outline:2px solid var(--blue); outl
           <section class="gsec">
             <div class="ghead"><div class="glabel">计划</div><button class="flow-edit" type="button" data-flow-edit><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>调整流程</button></div>
             <ol class="steps" data-flow="ellie">
-              <li class="wait" data-who="2" data-step-of="signal"><span class="sn">1</span><div class="sb"><div class="sh"><strong>定要验证的付费点和信号</strong><span class="wlab me">你自己做</span><span class="badge amber" data-sbadge>信号待定</span></div><div class="where">付费点定了：模拟自身决策。看回复人数还是等候名单人数，等你定</div></div></li>
-              <li class="ok" data-who="0"><span class="sn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span><div class="sb"><div class="sh"><strong>看什么话题有流量</strong><span class="wlab">分身做</span><span class="badge " data-sbadge>已完成</span></div><div class="where">参考「100 万次人生模拟」，定了三条选题标准：人人都会遇到的人生大问题、结论反直觉、观众能代入自己</div></div></li>
-              <li class="ok" data-who="1"><span class="sn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span><div class="sb"><div class="sh"><strong>定讲什么</strong><span class="wlab">分身做，你确认</span><span class="badge " data-sbadge>已完成</span></div><div class="where">话题和付费点交叉排出选题清单；形式定为「模拟结果」，系列叫「同一个人，重来一万次」</div></div></li>
-              <li class="wait" data-who="1" data-step-of="claims"><span class="sn">4</span><div class="sb"><div class="sh"><strong>做出真结果</strong><span class="wlab">分身做，你确认</span><span class="badge amber" data-sbadge>结论待你看</span></div><div class="where">参数都有出处，假设写明；只讲换了假设也不变的结论</div></div></li>
-              <li class="todo" data-who="1"><span class="sn">5</span><div class="sb"><div class="sh"><strong>制作并按平台适配</strong><span class="wlab">分身做，你确认</span></div><div class="where">X 用横版加配音字幕，竖版留给短视频平台；配一条帖子，首条回复放假设和来源</div></div></li>
-              <li class="todo" data-who="0"><span class="sn">6</span><div class="sb"><div class="sh"><strong>发布后复盘</strong><span class="wlab">分身做</span></div><div class="where">对照第 1 步定的信号看结果，决定继续做、换话题，还是换付费点；有效的形式沉淀成系列</div></div></li>
+              <li data-tools="" class="wait" data-who="2" data-step-of="signal"><span class="sn">1</span><div class="sb"><div class="sh"><strong>定要验证的付费点和信号</strong><span class="wlab me">你自己做</span><span class="badge amber" data-sbadge>信号待定</span></div><div class="where">付费点定了：模拟自身决策。看回复人数还是等候名单人数，等你定</div></div></li>
+              <li data-tools="X|YouTube" class="ok" data-who="0"><span class="sn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span><div class="sb"><div class="sh"><strong>看什么话题有流量</strong><span class="wlab">分身做</span><span class="badge " data-sbadge>已完成</span></div><div class="where">参考「100 万次人生模拟」，定了三条选题标准：人人都会遇到的人生大问题、结论反直觉、观众能代入自己</div></div></li>
+              <li data-tools="X|YouTube" class="ok" data-who="1"><span class="sn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span><div class="sb"><div class="sh"><strong>定讲什么</strong><span class="wlab">分身做，你确认</span><span class="badge " data-sbadge>已完成</span></div><div class="where">话题和付费点交叉排出选题清单；形式定为「模拟结果」，系列叫「同一个人，重来一万次」</div></div></li>
+              <li data-tools="模拟引擎|论文库" class="wait" data-who="1" data-step-of="claims"><span class="sn">4</span><div class="sb"><div class="sh"><strong>做出真结果</strong><span class="wlab">分身做，你确认</span><span class="badge amber" data-sbadge>结论待你看</span></div><div class="where">参数都有出处，假设写明；只讲换了假设也不变的结论</div></div></li>
+              <li data-tools="剪映|X" class="todo" data-who="1"><span class="sn">5</span><div class="sb"><div class="sh"><strong>制作并按平台适配</strong><span class="wlab">分身做，你确认</span></div><div class="where">X 用横版加配音字幕，竖版留给短视频平台；配一条帖子，首条回复放假设和来源</div></div></li>
+              <li data-tools="X|邮箱" class="todo" data-who="0"><span class="sn">6</span><div class="sb"><div class="sh"><strong>发布后复盘</strong><span class="wlab">分身做</span></div><div class="where">对照第 1 步定的信号看结果，决定继续做、换话题，还是换付费点；有效的形式沉淀成系列</div></div></li>
             </ol>
           </section>
           <section class="gsec">
@@ -850,6 +868,7 @@ button:focus-visible, textarea:focus-visible{outline:2px solid var(--blue); outl
             <div class="sub" data-conn-row="e_x"><div class="sub-head"><span class="d"></span><strong>X</strong><span class="badge" data-badge>已连接</span><button class="link-btn" type="button" data-conn="e_x">管理</button></div><div class="where">读帖子下的回复和私信，数有多少人说想跑一遍自己的；发帖要你确认。X 的接口按用量收费</div></div>
             <div class="sub" data-conn-row="e_wx"><div class="sub-head"><span class="d light"></span><strong>微信公众号</strong><span class="badge amber" data-badge>只读</span><button class="link-btn" type="button" data-conn="e_wx">管理</button></div><div class="where">读阅读数和留言；发文由你在后台点发布</div></div>
             <div class="sub" data-conn-row="e_mail"><div class="sub-head"><span class="d"></span><strong>邮箱</strong><span class="badge" data-badge>已连接</span><button class="link-btn" type="button" data-conn="e_mail">管理</button></div><div class="where">读等候名单的报名通知，算人数</div></div>
+            <div class="sub" data-conn-row="e_jy"><div class="sub-head"><span class="d light"></span><strong>剪映</strong><span class="badge grey" data-badge>未连接</span><button class="link-btn" type="button" data-conn="e_jy">授权</button></div><div class="where">连上后分身能把横版、竖版的草稿直接放进你的剪映草稿箱</div></div>
           </div>
         </article>
         <div class="mem-title">规则<span>每一步能自己做多少主，按最近的命中率自动放手或收回</span></div>
@@ -926,11 +945,11 @@ button:focus-visible, textarea:focus-visible{outline:2px solid var(--blue); outl
           <section class="gsec">
             <div class="ghead"><div class="glabel">计划</div><button class="flow-edit" type="button" data-flow-edit><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>调整流程</button></div>
             <ol class="steps" data-flow="lance">
-              <li class="ok" data-who="2"><span class="sn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span><div class="sb"><div class="sh"><strong>定画像</strong><span class="wlab me">你自己做</span><span class="badge ">已确认</span></div><div class="where">Lance 定的。找谁、算不算命中，都按画像判断</div></div></li>
-              <li class="wait" data-who="1"><span class="sn">2</span><div class="sb"><div class="sh"><strong>找最顶尖的那群人</strong><span class="wlab">分身做，你确认</span><span class="badge amber">等你定</span></div><div class="where">分身找到三群，下一批先找哪群要你定</div></div></li>
-              <li class="now" data-who="1"><span class="sn">3</span><div class="sb"><div class="sh"><strong>触达</strong><span class="wlab">分身做，你确认</span><span class="badge ">25 / 40</span></div><div class="where">先写信请导师推荐，直接写信为辅</div></div></li>
-              <li class="todo" data-who="2"><span class="sn">4</span><div class="sb"><div class="sh"><strong>约聊、面试</strong><span class="wlab me">你自己做</span></div><div class="where">约聊由 Lance 亲自来，分身只排时间、准备材料</div></div></li>
-              <li class="todo" data-who="0"><span class="sn">5</span><div class="sb"><div class="sh"><strong>11-30 · 复盘</strong><span class="wlab">分身做</span></div><div class="where">和预测比，写复盘，调下一批的人群和写法</div></div></li>
+              <li data-tools="" class="ok" data-who="2"><span class="sn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span><div class="sb"><div class="sh"><strong>定画像</strong><span class="wlab me">你自己做</span><span class="badge ">已确认</span></div><div class="where">Lance 定的。找谁、算不算命中，都按画像判断</div></div></li>
+              <li data-tools="论文库|GitHub|实验室主页" class="wait" data-who="1"><span class="sn">2</span><div class="sb"><div class="sh"><strong>找最顶尖的那群人</strong><span class="wlab">分身做，你确认</span><span class="badge amber">等你定</span></div><div class="where">分身找到三群，下一批先找哪群要你定</div></div></li>
+              <li data-tools="邮箱|LinkedIn" class="now" data-who="1"><span class="sn">3</span><div class="sb"><div class="sh"><strong>触达</strong><span class="wlab">分身做，你确认</span><span class="badge ">25 / 40</span></div><div class="where">先写信请导师推荐，直接写信为辅</div></div></li>
+              <li data-tools="日历" class="todo" data-who="2"><span class="sn">4</span><div class="sb"><div class="sh"><strong>约聊、面试</strong><span class="wlab me">你自己做</span></div><div class="where">约聊由 Lance 亲自来，分身只排时间、准备材料</div></div></li>
+              <li data-tools="招聘系统" class="todo" data-who="0"><span class="sn">5</span><div class="sb"><div class="sh"><strong>11-30 · 复盘</strong><span class="wlab">分身做</span></div><div class="where">和预测比，写复盘，调下一批的人群和写法</div></div></li>
             </ol>
           </section>
           <section class="gsec">
@@ -1073,12 +1092,12 @@ button:focus-visible, textarea:focus-visible{outline:2px solid var(--blue); outl
           <section class="gsec">
             <div class="ghead"><div class="glabel">计划</div><button class="flow-edit" type="button" data-flow-edit><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>调整流程</button></div>
             <ol class="steps" data-flow="akasha">
-              <li class="ok" data-who="1"><span class="sn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span><div class="sb"><div class="sh"><strong>列投资人名单</strong><span class="wlab">分身做，你确认</span><span class="badge " data-sbadge>已确认</span></div><div class="where">从 40 位里挑出 12 位重点，每位写清投过什么、为什么可能投我们</div></div></li>
-              <li class="ok" data-who="0"><span class="sn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span><div class="sb"><div class="sh"><strong>准备材料</strong><span class="wlab">分身做</span><span class="badge " data-sbadge>已完成</span></div><div class="where">BP、一页纸、模拟结果样例；按每位投资人关心的点各调一版</div></div></li>
-              <li class="ok" data-who="1"><span class="sn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span><div class="sb"><div class="sh"><strong>第一次联系</strong><span class="wlab">分身做，你确认</span><span class="badge " data-sbadge>12 / 12</span></div><div class="where">12 位都发出了，9 位回复</div></div></li>
-              <li class="now" data-who="2"><span class="sn">4</span><div class="sb"><div class="sh"><strong>开会</strong><span class="wlab me">你自己做</span><span class="badge " data-sbadge>7 场</span></div><div class="where">会前分身写一页简报，重要的会先拿模拟的投资人练一遍（只在内部用）</div></div></li>
-              <li class="wait" data-who="1"><span class="sn">5</span><div class="sb"><div class="sh"><strong>会后跟进</strong><span class="wlab">分身做，你确认</span><span class="badge amber" data-sbadge>2 件等你定</span></div><div class="where">24 小时内发跟进邮件、补材料；估值和条款一律转给你</div></div></li>
-              <li class="todo" data-who="0"><span class="sn">6</span><div class="sb"><div class="sh"><strong>到期复盘</strong><span class="wlab">分身做</span></div><div class="where">11-18 看约到几位第二次会；哪类投资人推进快，下一批多放</div></div></li>
+              <li data-tools="云端文档|投资机构官网" class="ok" data-who="1"><span class="sn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span><div class="sb"><div class="sh"><strong>列投资人名单</strong><span class="wlab">分身做，你确认</span><span class="badge " data-sbadge>已确认</span></div><div class="where">从 40 位里挑出 12 位重点，每位写清投过什么、为什么可能投我们</div></div></li>
+              <li data-tools="云端文档" class="ok" data-who="0"><span class="sn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span><div class="sb"><div class="sh"><strong>准备材料</strong><span class="wlab">分身做</span><span class="badge " data-sbadge>已完成</span></div><div class="where">BP、一页纸、模拟结果样例；按每位投资人关心的点各调一版</div></div></li>
+              <li data-tools="邮箱" class="ok" data-who="1"><span class="sn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span><div class="sb"><div class="sh"><strong>第一次联系</strong><span class="wlab">分身做，你确认</span><span class="badge " data-sbadge>12 / 12</span></div><div class="where">12 位都发出了，9 位回复</div></div></li>
+              <li data-tools="日历|云端文档" class="now" data-who="2"><span class="sn">4</span><div class="sb"><div class="sh"><strong>开会</strong><span class="wlab me">你自己做</span><span class="badge " data-sbadge>7 场</span></div><div class="where">会前分身写一页简报，重要的会先拿模拟的投资人练一遍（只在内部用）</div></div></li>
+              <li data-tools="邮箱" class="wait" data-who="1"><span class="sn">5</span><div class="sb"><div class="sh"><strong>会后跟进</strong><span class="wlab">分身做，你确认</span><span class="badge amber" data-sbadge>2 件等你定</span></div><div class="where">24 小时内发跟进邮件、补材料；估值和条款一律转给你</div></div></li>
+              <li data-tools="云端文档" class="todo" data-who="0"><span class="sn">6</span><div class="sb"><div class="sh"><strong>到期复盘</strong><span class="wlab">分身做</span></div><div class="where">11-18 看约到几位第二次会；哪类投资人推进快，下一批多放</div></div></li>
             </ol>
           </section>
           <section class="gsec">
@@ -1209,7 +1228,7 @@ button:focus-visible, textarea:focus-visible{outline:2px solid var(--blue); outl
           <section class="gsec">
             <div class="ghead"><div class="glabel">计划</div><button class="flow-edit" type="button" data-flow-edit><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>调整流程</button></div>
             <ol class="steps" data-flow="junc">
-              <li class="ok" data-who="2"><span class="sn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span><div class="sb"><div class="sh"><strong>写清要验证什么，先写预期</strong><span class="wlab me">你自己做</span><span class="badge " data-sbadge>已写好</span></div><div class="where">预期 5 组里 4 组一致；最没把握的是存款分布那组</div></div></li><li class="ok" data-who="0"><span class="sn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span><div class="sb"><div class="sh"><strong>查资料、搭实验</strong><span class="wlab">分身做</span><span class="badge " data-sbadge>已完成</span></div><div class="where">5 组参数各有出处：公开统计、文献、两份不同的存款分布数据</div></div></li><li class="now" data-who="0"><span class="sn">3</span><div class="sb"><div class="sh"><strong>跑实验</strong><span class="wlab">分身做</span><span class="badge " data-sbadge>3 / 5</span></div><div class="where">每组跑 10 万次，固定随机种子，保证能复现</div></div></li><li class="wait" data-who="2"><span class="sn">4</span><div class="sb"><div class="sh"><strong>看结果、决定下一步</strong><span class="wlab me">你自己做</span><span class="badge amber" data-sbadge>1 件等你定</span></div><div class="where">第 3 组和前两组对不上，先查原因还是先排除</div></div></li><li class="todo" data-who="0"><span class="sn">5</span><div class="sb"><div class="sh"><strong>复盘：预期和实际差多少</strong><span class="wlab">分身做</span></div><div class="where">周五对照预期，写清哪组为什么不一致</div></div></li>
+              <li data-tools="" class="ok" data-who="2"><span class="sn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span><div class="sb"><div class="sh"><strong>写清要验证什么，先写预期</strong><span class="wlab me">你自己做</span><span class="badge " data-sbadge>已写好</span></div><div class="where">预期 5 组里 4 组一致；最没把握的是存款分布那组</div></div></li><li data-tools="论文库|云端文档" class="ok" data-who="0"><span class="sn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span><div class="sb"><div class="sh"><strong>查资料、搭实验</strong><span class="wlab">分身做</span><span class="badge " data-sbadge>已完成</span></div><div class="where">5 组参数各有出处：公开统计、文献、两份不同的存款分布数据</div></div></li><li data-tools="计算资源|GitHub" class="now" data-who="0"><span class="sn">3</span><div class="sb"><div class="sh"><strong>跑实验</strong><span class="wlab">分身做</span><span class="badge " data-sbadge>3 / 5</span></div><div class="where">每组跑 10 万次，固定随机种子，保证能复现</div></div></li><li data-tools="" class="wait" data-who="2"><span class="sn">4</span><div class="sb"><div class="sh"><strong>看结果、决定下一步</strong><span class="wlab me">你自己做</span><span class="badge amber" data-sbadge>1 件等你定</span></div><div class="where">第 3 组和前两组对不上，先查原因还是先排除</div></div></li><li data-tools="云端文档" class="todo" data-who="0"><span class="sn">5</span><div class="sb"><div class="sh"><strong>复盘：预期和实际差多少</strong><span class="wlab">分身做</span></div><div class="where">周五对照预期，写清哪组为什么不一致</div></div></li>
             </ol>
           </section>
           <section class="gsec">
@@ -1310,7 +1329,7 @@ button:focus-visible, textarea:focus-visible{outline:2px solid var(--blue); outl
           <section class="gsec">
             <div class="ghead"><div class="glabel">计划</div><button class="flow-edit" type="button" data-flow-edit><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>调整流程</button></div>
             <ol class="steps" data-flow="dongqi">
-              <li class="ok" data-who="2"><span class="sn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span><div class="sb"><div class="sh"><strong>写清要验证什么，先写预期</strong><span class="wlab me">你自己做</span><span class="badge " data-sbadge>已写好</span></div><div class="where">预期 3 组都一致；最没把握的是随机种子不同带来的波动</div></div></li><li class="ok" data-who="0"><span class="sn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span><div class="sb"><div class="sh"><strong>查资料、搭实验</strong><span class="wlab">分身做</span><span class="badge " data-sbadge>已完成</span></div><div class="where">拿 Ellie 那边的参数表和假设，独立搭一套环境，不共用原来的代码</div></div></li><li class="now" data-who="0"><span class="sn">3</span><div class="sb"><div class="sh"><strong>跑实验</strong><span class="wlab">分身做</span><span class="badge " data-sbadge>2 / 3</span></div><div class="where">每组 10 万次，和原结果逐条比</div></div></li><li class="wait" data-who="2"><span class="sn">4</span><div class="sb"><div class="sh"><strong>看结果、决定下一步</strong><span class="wlab me">你自己做</span><span class="badge amber" data-sbadge>1 件等你定</span></div><div class="where">复跑一致的部分，参数表和脚本要不要公开</div></div></li><li class="todo" data-who="0"><span class="sn">5</span><div class="sb"><div class="sh"><strong>复盘：预期和实际差多少</strong><span class="wlab">分身做</span></div><div class="where">交给 Ellie 前写一页：哪些数一致、差多少、为什么</div></div></li>
+              <li data-tools="" class="ok" data-who="2"><span class="sn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span><div class="sb"><div class="sh"><strong>写清要验证什么，先写预期</strong><span class="wlab me">你自己做</span><span class="badge " data-sbadge>已写好</span></div><div class="where">预期 3 组都一致；最没把握的是随机种子不同带来的波动</div></div></li><li data-tools="GitHub|云端文档" class="ok" data-who="0"><span class="sn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span><div class="sb"><div class="sh"><strong>查资料、搭实验</strong><span class="wlab">分身做</span><span class="badge " data-sbadge>已完成</span></div><div class="where">拿 Ellie 那边的参数表和假设，独立搭一套环境，不共用原来的代码</div></div></li><li data-tools="计算资源|GitHub" class="now" data-who="0"><span class="sn">3</span><div class="sb"><div class="sh"><strong>跑实验</strong><span class="wlab">分身做</span><span class="badge " data-sbadge>2 / 3</span></div><div class="where">每组 10 万次，和原结果逐条比</div></div></li><li data-tools="" class="wait" data-who="2"><span class="sn">4</span><div class="sb"><div class="sh"><strong>看结果、决定下一步</strong><span class="wlab me">你自己做</span><span class="badge amber" data-sbadge>1 件等你定</span></div><div class="where">复跑一致的部分，参数表和脚本要不要公开</div></div></li><li data-tools="云端文档" class="todo" data-who="0"><span class="sn">5</span><div class="sb"><div class="sh"><strong>复盘：预期和实际差多少</strong><span class="wlab">分身做</span></div><div class="where">交给 Ellie 前写一页：哪些数一致、差多少、为什么</div></div></li>
             </ol>
           </section>
           <section class="gsec">
@@ -1478,28 +1497,80 @@ button:focus-visible, textarea:focus-visible{outline:2px solid var(--blue); outl
   }
 
 
+
+  // ---------- tools per plan step ----------
+  var TOOL_FREE = {'YouTube':'公开数据，不用授权','论文库':'公开数据，不用授权','实验室主页':'公开数据，不用授权','投资机构官网':'公开数据，不用授权','模拟引擎':'内部工具，不用授权'};
+  var TOOL_COMMON = {ellie:['剪映','YouTube','小红书','抖音','B站'], lance:['LinkedIn','Boss直聘','猎聘','脉脉','论文库'], akasha:['LinkedIn','Crunchbase','投资机构官网'], junc:['计算资源','论文库','Jupyter'], dongqi:['计算资源','论文库','Jupyter']};
+  function toolRow(app, name){
+    return [].filter.call(app.querySelectorAll('[data-conn-row]'), function(r){ var t = r.querySelector('strong').textContent; return t === name || t.indexOf(name + '（') === 0 || t.indexOf(name + ' ·') === 0; })[0];
+  }
+  function toolState(app, name){
+    var r = toolRow(app, name);
+    if (r){ var b = r.querySelector('[data-badge]') || r.querySelector('.badge'), bt = b ? b.textContent : '';
+      if (bt === '未连接') return {off:true, tip:name + ' 还没授权，点一下去授权'};
+      if (bt === '只起草' || bt === '只读') return {label:bt, tip:name + '：' + bt};
+      return {tip:name + '：' + bt}; }
+    if (TOOL_FREE[name]) return {tip:TOOL_FREE[name]};
+    return {off:true, tip:name + ' 还没授权，点一下去授权'};
+  }
+  function toolList(li){ return (li.dataset.tools || '').split('|').filter(Boolean); }
+  function renderToolsLi(li){
+    var app = li.closest('.app'), sb = li.querySelector('.sb'), box = sb.querySelector('.tools'), list = toolList(li);
+    if (!list.length){ if (box) box.remove(); return; }
+    if (!box){ box = document.createElement('div'); box.className = 'tools'; sb.appendChild(box); }
+    box.innerHTML = '<span class="tl">用</span>' + list.map(function(n){
+      var st = toolState(app, n);
+      if (st.off) return '<button type="button" class="tool off" data-tool="' + escA(n) + '" title="' + escA(st.tip) + '">' + esc(n) + '<i>未授权</i></button>';
+      return '<span class="tool" title="' + escA(st.tip) + '">' + esc(n) + (st.label ? '<i>' + st.label + '</i>' : '') + '</span>';
+    }).join('');
+  }
+  function renderTools(root){ (root || document).querySelectorAll('ol.steps > li').forEach(renderToolsLi); }
+  function goAuth(app, name){
+    showTab(app, 'twin');
+    setTimeout(function(){
+      var r = toolRow(app, name), log = app.querySelector('.log');
+      if (r){ r.scrollIntoView({behavior:'smooth', block:'center'}); r.classList.remove('flash'); void r.offsetWidth; r.classList.add('flash');
+        if (!r.querySelector('.conn-panel')){ var b = r.querySelector('[data-conn]'); if (b) connPanel(r, b.dataset.conn); } }
+      else twinSays(log, name + ' 还不在授权平台里。这一步我先不用它，等你在“分身 → 授权平台”加上再说。');
+    }, 250);
+  }
+
   // ---------- quick workflow edit (进度 → 计划 → 调整流程) ----------
   function escA(t){ return esc(t).replace(/"/g, '&quot;'); }
   function flowOpen(btn){
     var sec = btn.closest('.gsec'), ol = sec.querySelector('ol.steps'); if (!ol || sec.querySelector('.flow-ed')) return;
-    var key = ol.dataset.flow, orig = [].map.call(ol.children, function(li, i){ return {li:li, oi:i, t:li.querySelector('.sh strong').textContent, who:+li.dataset.who}; });
-    var rows = orig.map(function(r){ return {li:r.li, oi:r.oi, t:r.t, who:r.who}; }), scope = 'once';
+    var key = ol.dataset.flow, app = ol.closest('.app'), orig = [].map.call(ol.children, function(li, i){ return {li:li, oi:i, t:li.querySelector('.sh strong').textContent, who:+li.dataset.who, tools:toolList(li)}; });
+    var rows = orig.map(function(r){ return {li:r.li, oi:r.oi, t:r.t, who:r.who, tools:r.tools.slice()}; }), scope = 'once';
+    var authed = [].map.call(app.querySelectorAll('[data-conn-row] strong'), function(x){ return x.textContent.split(/（| ·/)[0]; });
+    function toolOpts(r){
+      var mine = authed.filter(function(n, j){ return authed.indexOf(n) === j && r.tools.indexOf(n) < 0; });
+      var more = (TOOL_COMMON[key] || []).filter(function(n){ return mine.indexOf(n) < 0 && r.tools.indexOf(n) < 0; });
+      return '<option value="">+ 加工具</option>' + (mine.length ? '<optgroup label="授权平台里的">' + mine.map(function(n){ return '<option>' + esc(n) + '</option>'; }).join('') + '</optgroup>' : '') + (more.length ? '<optgroup label="常用的">' + more.map(function(n){ return '<option>' + esc(n) + '</option>'; }).join('') + '</optgroup>' : '') + '<option value="__own">自己填…</option>';
+    }
     var ed = document.createElement('div'); ed.className = 'flow-ed';
     function draw(focusLast){
-      ed.innerHTML = '<p class="hint">改步骤、谁来做、顺序。改完选这次改动管多久。</p><div class="fsteps">' + rows.map(function(r, i){
-          return '<div class="fstep x"><span class="no">' + (i + 1) + '</span><input data-q="t" data-i="' + i + '" value="' + escA(r.t) + '" aria-label="第 ' + (i + 1) + ' 步"><select data-q="w" data-i="' + i + '" aria-label="谁来做">' + WHO.map(function(w, j){ return '<option value="' + j + '"' + (j === r.who ? ' selected' : '') + '>' + w + '</option>'; }).join('') + '</select><button class="del" type="button" data-q="up" data-i="' + i + '" aria-label="往前挪"' + (i ? '' : ' disabled') + '>↑</button><button class="del" type="button" data-q="del" data-i="' + i + '" aria-label="删掉这一步">×</button></div>';
+      ed.innerHTML = '<p class="hint">改步骤、谁来做、用什么工具、顺序。没授权的工具分身会先停下来问你。</p><div class="fsteps">' + rows.map(function(r, i){
+          return '<div class="fstep x"><span class="no">' + (i + 1) + '</span><input data-q="t" data-i="' + i + '" value="' + escA(r.t) + '" aria-label="第 ' + (i + 1) + ' 步"><select data-q="w" data-i="' + i + '" aria-label="谁来做">' + WHO.map(function(w, j){ return '<option value="' + j + '"' + (j === r.who ? ' selected' : '') + '>' + w + '</option>'; }).join('') + '</select><button class="del" type="button" data-q="up" data-i="' + i + '" aria-label="往前挪"' + (i ? '' : ' disabled') + '>↑</button><button class="del" type="button" data-q="del" data-i="' + i + '" aria-label="删掉这一步">×</button>' +
+            '<div class="ftools"><span class="tl">用</span>' + r.tools.map(function(n, j){ return '<span class="tool">' + esc(n) + '<button type="button" data-q="tdel" data-i="' + i + '" data-j="' + j + '" aria-label="不用 ' + escA(n) + '">×</button></span>'; }).join('') +
+            (r.own ? '<input data-q="town" data-i="' + i + '" placeholder="工具名，回车加上" aria-label="自己填工具">' : '<select data-q="tadd" data-i="' + i + '" aria-label="给第 ' + (i + 1) + ' 步加工具">' + toolOpts(r) + '</select>') + '</div></div>';
         }).join('') + '</div><button class="link-btn add" type="button" data-q="add">+ 加一步</button>' +
         '<div class="scope" role="radiogroup" aria-label="改动管多久"><label><input type="radio" name="scope-' + key + '" value="once"' + (scope === 'once' ? ' checked' : '') + '>只改这一次任务</label><label><input type="radio" name="scope-' + key + '" value="always"' + (scope === 'always' ? ' checked' : '') + '>以后的任务都按这个来</label></div>' +
         '<div class="acts"><button class="btn primary" type="button" data-q="save">保存</button><button class="btn" type="button" data-q="cancel">取消</button></div>';
       if (focusLast){ var ins = ed.querySelectorAll('input[data-q="t"]'); ins[ins.length - 1].select(); }
+      var own = ed.querySelector('input[data-q="town"]'); if (own) own.focus();
     }
     ed.addEventListener('input', function(e){ var q = e.target.dataset.q, i = +e.target.dataset.i; if (q === 't') rows[i].t = e.target.value; });
-    ed.addEventListener('change', function(e){ var q = e.target.dataset.q; if (q === 'w') rows[+e.target.dataset.i].who = +e.target.value; if (e.target.type === 'radio') scope = e.target.value; });
+    ed.addEventListener('change', function(e){ var q = e.target.dataset.q; if (q === 'w') rows[+e.target.dataset.i].who = +e.target.value; if (e.target.type === 'radio') scope = e.target.value;
+      if (q === 'tadd'){ var r = rows[+e.target.dataset.i], v = e.target.value; if (v === '__own') r.own = true; else if (v) r.tools.push(v); draw(); } });
+    function addOwn(inp){ var r = rows[+inp.dataset.i]; if (!r || !r.own) return; inp.value.split(/[、,，]/).map(function(x){ return x.trim(); }).filter(Boolean).forEach(function(n){ if (r.tools.indexOf(n) < 0) r.tools.push(n); }); r.own = false; draw(); }
+    ed.addEventListener('keydown', function(e){ if (e.target.dataset.q === 'town'){ if (e.key === 'Enter'){ e.preventDefault(); addOwn(e.target); } else if (e.key === 'Escape'){ rows[+e.target.dataset.i].own = false; draw(); } } });
+    ed.addEventListener('focusout', function(e){ if (e.target.dataset.q === 'town' && e.target.isConnected) addOwn(e.target); });
     ed.addEventListener('click', function(e){
       var b = e.target.closest('button[data-q]'); if (!b) return; var q = b.dataset.q, i = +b.dataset.i;
       if (q === 'up' && i > 0){ var t = rows[i - 1]; rows[i - 1] = rows[i]; rows[i] = t; draw(); }
       else if (q === 'del'){ if (rows.length > 1){ rows.splice(i, 1); draw(); } }
-      else if (q === 'add'){ rows.push({li:null, oi:-1, t:'新的一步', who:1}); draw(true); }
+      else if (q === 'add'){ rows.push({li:null, oi:-1, t:'新的一步', who:1, tools:[]}); draw(true); }
+      else if (q === 'tdel'){ rows[i].tools.splice(+b.dataset.j, 1); draw(); }
       else if (q === 'cancel'){ close(); }
       else if (q === 'save'){ save(); }
     });
@@ -1509,10 +1580,11 @@ button:focus-visible, textarea:focus-visible{outline:2px solid var(--blue); outl
       var msg = [], kept = rows.filter(function(r){ return r.li; });
       orig.forEach(function(o){ if (rows.indexOf(rows.filter(function(r){ return r.li === o.li; })[0]) < 0) msg.push('删了「' + o.t + '」'); });
       rows.forEach(function(r){
-        if (!r.li){ msg.push('加了「' + r.t + '」（' + WHO[r.who] + '）'); return; }
+        if (!r.li){ msg.push('加了「' + r.t + '」（' + WHO[r.who] + (r.tools.length ? '，用 ' + r.tools.join('、') : '') + '）'); return; }
         var o = orig[r.oi];
         if (o.t !== r.t) msg.push('「' + o.t + '」改叫「' + r.t + '」');
         if (o.who !== r.who) msg.push('「' + r.t + '」改成' + WHO[r.who]);
+        if (o.tools.join('|') !== r.tools.join('|')) msg.push(r.tools.length ? '「' + r.t + '」改用 ' + r.tools.join('、') : '「' + r.t + '」不指定工具');
       });
       if (kept.some(function(r, i){ return i > 0 && r.oi < kept[i - 1].oi; })) msg.push('调了顺序');
       if (!msg.length){ close(); return; }
@@ -1522,7 +1594,8 @@ button:focus-visible, textarea:focus-visible{outline:2px solid var(--blue); outl
         li.dataset.who = r.who; li.querySelector('.sh strong').textContent = r.t;
         var w = li.querySelector('.wlab'); w.textContent = WHO[r.who]; w.className = 'wlab' + (r.who === 2 ? ' me' : '');
         if (!li.classList.contains('ok')) li.querySelector('.sn').textContent = i + 1;
-        ol.appendChild(li);
+        li.dataset.tools = r.tools.join('|');
+        ol.appendChild(li); renderToolsLi(li);
       });
       orig.forEach(function(o){ if (!o.li.parentNode || rows.every(function(r){ return r.li !== o.li; })) o.li.remove(); });
       var M = MEM[key];
@@ -1530,14 +1603,15 @@ button:focus-visible, textarea:focus-visible{outline:2px solid var(--blue); outl
         var f = M.folders.filter(function(x){ return x.k === 'flow'; })[0], n = f && f.notes[0];
         if (n){
           var old = n.secs, same = old.length === orig.length;
-          n.secs = rows.map(function(r, i){ return S((i + 1) + '. ' + r.t + ' · ' + WHO[r.who], (same && r.oi > -1) ? old[r.oi].li : [['新加的一步，分身会补上具体怎么做','你刚加的']]); });
+          n.secs = rows.map(function(r, i){ return S((i + 1) + '. ' + r.t + ' · ' + WHO[r.who] + (r.tools.length ? ' · 用' + r.tools.join('、') : ''), (same && r.oi > -1) ? old[r.oi].li : [['新加的一步，分身会补上具体怎么做','你刚加的']]); });
           n.html = null; n.edited = true; M.edits++;
         }
       }
       close();
       var log = ol.closest('.app').querySelector('.log');
       bubble(log, '我调整了流程：' + msg.join('；'), 'me');
-      twinSays(log, scope === 'always' ? '收到。这次和以后的任务都按新流程走，“工作流程”那篇记忆也一起改了。' : '收到，这次任务按新流程走。以后要不要也这样，复盘的时候我再问你。');
+      var offs = []; rows.forEach(function(r){ r.tools.forEach(function(n){ if (toolState(app, n).off && offs.indexOf(n) < 0) offs.push(n); }); });
+      twinSays(log, (scope === 'always' ? '收到。这次和以后的任务都按新流程走，“工作流程”那篇记忆也一起改了。' : '收到，这次任务按新流程走。以后要不要也这样，复盘的时候我再问你。') + (offs.length ? offs.join('、') + ' 还没授权，用到那一步我会先停下来，点计划里标黄的工具就能去授权。' : ''));
     }
     draw(); ol.hidden = true; btn.hidden = true; ol.after(ed);
     var first = ed.querySelector('input'); if (first) first.focus();
@@ -1626,7 +1700,8 @@ button:focus-visible, textarea:focus-visible{outline:2px solid var(--blue); outl
     bubble(log, t, 'me'); if (say){ say.value = ''; app.querySelector('.composer').classList.remove('has-text'); }
     var key = app.dataset.key || 'ellie';
     var hit = (CANNED[key] || CANNED.ellie).filter(function(c){ return t.indexOf(c.k) > -1; })[0];
-    if (/流程/.test(t)){ twinSays(log, '可以。我把右边的计划打开成可以改的样子了：步骤、谁来做、顺序都能改，改完选只改这一次，还是以后都这样。也可以直接告诉我改哪一步，比如“第 5 步先只做横版”。'); openFlowFrom(app); return; }
+    if (/工具|用什么/.test(t)){ twinSays(log, '可以。我把右边的计划打开成可以改的样子了，每一步下面能加、删工具。授权平台里有的直接选；还没授权的我先不用，计划里会标成“未授权”，点一下就能去授权。'); openFlowFrom(app); return; }
+    if (/流程/.test(t)){ twinSays(log, '可以。我把右边的计划打开成可以改的样子了：步骤、谁来做、用什么工具、顺序都能改，改完选只改这一次，还是以后都这样。也可以直接告诉我改哪一步，比如“第 5 步先只做横版”。'); openFlowFrom(app); return; }
     twinSays(log, hit ? hit.a : '收到。我先列个计划，把预测和出结果的时间一起写给你，你确认了我再动手。');
   }
   document.querySelectorAll('.composer').forEach(function(form){
@@ -1654,6 +1729,7 @@ button:focus-visible, textarea:focus-visible{outline:2px solid var(--blue); outl
     l_ats: {name:'招聘系统', svc:'Ashby', can:['读取职位和候选人进度','写入候选人备注','读取面试反馈，用来核对结果'], no:['发 offer','修改职位要求','删除候选人']},
     e_x:   {name:'X', svc:'X', can:['读帖子下的回复和私信','发帖，要你确认'], no:['关注、取关别人','发私信']},
     e_wx:  {name:'微信公众号', svc:'微信', can:['读阅读数和留言'], no:['发布文章（要你在后台点）','回复留言']},
+    e_jy:  {name:'剪映', svc:'剪映', can:['把剪好的草稿放进你的草稿箱'], no:['导出或发布视频','读你的其他草稿']},
     e_mail:{name:'邮箱', svc:'Google', can:['读等候名单的报名通知'], no:['发邮件','读和运营无关的邮件']}
   };
   var BADGE = {on:['已连接',''], draft:['只起草','amber'], read:['只读','amber'], off:['未连接','grey']};
@@ -1681,11 +1757,11 @@ button:focus-visible, textarea:focus-visible{outline:2px solid var(--blue); outl
       if (x.dataset.x === 'close'){ p.remove(); return; }
       if (x.dataset.x === 'grant'){
         x.disabled = true; x.textContent = '正在跳转到 ' + c.svc + ' 登录…';
-        setTimeout(function(){ setBadge(row, 'on'); btn.textContent = '管理'; p.remove();
+        setTimeout(function(){ setBadge(row, 'on'); btn.textContent = '管理'; p.remove(); renderTools(row.closest('.app'));
           twinSays(log, c.name + ' 连上了。我只用你刚才同意的这几项权限，想要更多会先问你。'); }, 900);
       }
       if (x.dataset.x === 'revoke'){
-        setBadge(row, 'off'); btn.textContent = '授权'; p.remove();
+        setBadge(row, 'off'); btn.textContent = '授权'; p.remove(); renderTools(row.closest('.app'));
         twinSays(log, '已经撤销 ' + c.name + ' 的授权，马上生效。之后用到 ' + c.name + ' 的步骤会先停下来问你。');
       }
     });
@@ -2203,6 +2279,7 @@ button:focus-visible, textarea:focus-visible{outline:2px solid var(--blue); outl
   // ---------- one click handler ----------
   document.addEventListener('click', function(e){
     var fe = e.target.closest('[data-flow-edit]'); if (fe){ flowOpen(fe); return; }
+    var tl = e.target.closest('button.tool.off[data-tool]'); if (tl){ goAuth(tl.closest('.app'), tl.dataset.tool); return; }
     var ra = e.target.closest('[data-ref-add]'); if (ra){ refOpen(ra); return; }
     var rd = e.target.closest('[data-ref-del]'); if (rd){ refDel(rd); return; }
     var t;
@@ -2246,6 +2323,7 @@ button:focus-visible, textarea:focus-visible{outline:2px solid var(--blue); outl
     window.scrollTo(0, 0);
   }
   ['new-twin','new-twin-2'].forEach(function(id){ var b = document.getElementById(id); if (b) b.addEventListener('click', function(){ location.hash = 'new'; }); });
+  renderTools();
   window.addEventListener('hashchange', route);
   route();
 })();
